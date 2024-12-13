@@ -1,0 +1,43 @@
+{
+  "name": "Atmanirbhar Bharat Escrow",
+  "short_name": "Atmanirbhar",
+  "description": "Empowering Indian Freelancers and Buyers Through Secure Transactions",
+  "icons": [
+    {
+      "src": "logo.jpg",
+      "sizes": "196x196",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "logo256.png",
+      "sizes": "256x256",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "logo384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "logo512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "https://atmanirbhar.bharatescrow.com/auth/sign-in",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "orientation": "any",
+  "scope": "/",
+  "lang": "en",
+  "prefer_related_applications": true,
+  "serviceworker": {
+    "src": "/path/to/service-worker.js",
+    "scope": "/"
+  }
+}

@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.registerForm::-webkit-scrollbar {
+    width: 8px;
+    height: 12px;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+.registerForm::-webkit-scrollbar-thumb {
+    background-color: black;
+    border-radius: 20px;
+}
+
+.blurred-background {
+    backdrop-filter: blur(8px);
+}
+
+
+/* //for animation  */
+
+.fade-out {
+    animation: fadeOut 5s forwards;
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
