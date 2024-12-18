@@ -5,6 +5,7 @@ import {
     Typography,
     Avatar,
     Button,
+    Chip,
   } from "@material-tailwind/react";
   import { useEffect, useState } from "react";
   import { GetHelpService, MarkStatusDoneHelpService } from "@/services/api.service";
@@ -101,33 +102,34 @@ import {
                     </thead>
                     <tbody>
                       {helpData.map((helpData, key) => (
-                        <tr key={key} className="hover:bg-gray-50">
-                          <td className="py-3 px-5 text-sm">{helpData._id.slice(-10)}</td>
+                        <tr key={key} className="hover:bg-gray-50 border-b border-blue-gray-50">
+                          <td className="py-3 px-5 text-xs font-bold text-black">{helpData._id.slice(-10)}</td>
                           
-                          <td className="py-3 px-5 text-sm">{helpData.userId.slice(-10)}</td>
-                          <td className="py-3 px-5 text-sm">{helpData.orderId.slice(-10)}</td>
-                          <td className="py-3 px-5 text-sm">{new Date(helpData.createdAt).toLocaleString("en-IN", {
+                          <td className="py-3 px-5 text-xs font-medium text-blue-gray-600">{helpData.userId.slice(-10)}</td>
+                          <td className="py-3 px-5 text-xs font-medium text-blue-gray-600">{helpData.orderId.slice(-10)}</td>
+                          <td className="py-3 px-5 text-xs font-medium text-blue-gray-600">{new Date(helpData.createdAt).toLocaleString("en-IN", {
     timeZone: "Asia/Kolkata",
     day: "2-digit",
     month: "2-digit",
     year: "numeric",
     
   })}</td>
-                          <td className="py-3 px-5 text-sm">{helpData.issue}</td>
+                          <td className="py-3 px-5 text-xs font-medium text-blue-gray-600">{helpData.issue}</td>
                           <td
-                            className={`py-3 px-5 capitalize text-sm ${
-                              helpData.status === "pending"
-                                ? "text-yellow-800"
-                                : "text-green-800"
-                            }`}
+                            
                           >
-                            {helpData.status}
+                          <Chip
+                                                                                  variant="gradient"
+                                                                                  color={helpData.status === "Pending" ? "yellow" : "green"}
+                                                                                  value={helpData.status === 'Pending' ? helpData.status:"completed"}
+                                                                                  className="py-0.5 px-2 text-[11px] font-medium w-fit"
+                                                                              />
                           </td>
                           <td className="py-3 px-5">
                             <button
-                              className={`w-16 text-[12px] py-1 px-1 text-white rounded ${
+                              className={`w-16 text-xs font-medium py-1 px-1 text-white rounded ${
                                 helpData.status == "Pending"
-                                  ? "bg-green-800 hover:bg-green-700"
+                                  ? "bg-black"
                                   : "bg-gray-500 cursor-not-allowed"
                               }`}
                               disabled={helpData.status !== "Pending"}

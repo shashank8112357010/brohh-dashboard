@@ -67,7 +67,7 @@ export function Testimonial() {
                     </div>
                     <Typography
                       variant="body2"
-                      className="text-gray-600"
+                      className="text-gray-600 text-sm"
                     >
                       {testimonial.message}
                     </Typography>

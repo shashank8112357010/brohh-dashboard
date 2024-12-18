@@ -4,6 +4,7 @@ import {
     CardBody,
     Typography,
     Button,
+    Chip,
   } from "@material-tailwind/react";
   import { useEffect, useState } from "react";
   import { GetOrdersService, MarkStatusDoneOrdersService } from "@/services/api.service";
@@ -66,7 +67,7 @@ import {
                 <div className="overflow-x-auto min-h-[65vh]">
                   <table className="w-full table-auto border-collapse">
                     <thead>
-                      <tr className="bg-gray-100">
+                      <tr className="bg-gray-100 text-[11px]">
                         {[
                           "Order Id",
                           "Name",
@@ -94,23 +95,25 @@ import {
                     </thead>
                     <tbody>
                       {orderData.map((order, key) => (
-                        <tr key={order.orderId} className="hover:bg-gray-50">
-                          <td className="py-3 px-5">{order.orderId}</td>
-                          <td className="py-3 px-5">{"N/A"}</td>
-                          <td className="py-3 px-5">{"N/A"}</td>
-                          <td className="py-3 px-5">{"N/A"}</td>
-                          <td className="py-3 px-5">{"N/A"}</td>
-                          <td className="py-3 px-5">{order.currency}</td>
-                          <td className="py-3 px-5">{order.paymentMethod}</td>
+                        <tr key={order.orderId} className="hover:bg-gray-50 text-xs border-b border-blue-gray-50 font-medium">
+                          <td className="py-3 px-5 text-xs font-bold text-black ">{order.orderId}</td>
+                          <td className="py-3 px-5 text-xs font-medium text-blue-gray-600">{"N/A"}</td>
+                          <td className="py-3 px-5 text-xs font-medium text-blue-gray-600">{"N/A"}</td>
+                          <td className="py-3 px-5 text-xs font-medium text-blue-gray-600">{"N/A"}</td>
+                          <td className="py-3 px-5 text-xs font-medium text-blue-gray-600">{"N/A"}</td>
+                          <td className="py-3 px-5 text-xs font-medium text-blue-gray-600">{order.currency}</td>
+                          <td className="py-3 px-5 text-xs font-medium text-blue-gray-600">{order.paymentMethod}</td>
                           <td
-                            className={`py-3 px-5 capitalize ${
-                              order.status === "pending"
-                                ? "text-yellow-800"
-                                : "text-green-800"
-                            }`}
+                           
                           >
-                            {order.status}
-                          </td>
+ <Chip
+                                                        variant="gradient"
+                                                        color={order.status === "delivered" ? "green" : "blue-gray"}
+                                                        value={order.status}
+                                                        className="py-0.5 px-2 text-[11px] font-medium w-fit"
+                                                    />
+
+                                                     </td>
                           <td className="py-3 px-5">
                             <button
                               className={`text-[12px] py-1 px-1 text-white rounded ${

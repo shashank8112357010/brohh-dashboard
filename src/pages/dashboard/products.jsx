@@ -133,7 +133,7 @@ export function Products() {
           <Button
             variant="text"
             onClick={showForm}
-            className="bg-[#212121] text-white mr-4 mb-4 text-lg py-2 px-4 hover:bg-white hover:text-[#212121] border-2 hover:border-[#212121]"
+            className="bg-[#212121] text-white mr-4 mb-4 text-sm py-2 px-4 hover:bg-white hover:text-[#212121] border-2 hover:border-[#212121]"
           >
             Add Product
           </Button>
@@ -177,16 +177,16 @@ export function Products() {
               </thead>
               <tbody>
                 {products.map((product, key) => (
-                  <tr key={product._id}>
-                    <td className="py-3 px-5">{product.name}</td>
-                    <td className="py-3 px-5" title={product.description}>{product.description.length > 10 ? `${product.description.slice(0, 19)}...` : product.description}</td>
-                    <td className="py-3 px-5">${product.price}</td>
-                    <td className="py-3 px-5">{product.sizes.join(", ")}</td>
-                    <td className="py-3 px-5">{product.colors.join(", ")}</td>
-                    <td className="py-3 px-5">{product.fabric}</td>
-                    <td className="py-3 px-5">{product.category}</td>
-                    <td className="py-3 px-5">{product.ratings}</td>
-                    <td className="py-3 px-5">
+                  <tr key={product._id} className="border-b border-blue-gray-50">
+                    <td className="py-3 px-5 text-xs font-bold text-black">{product.name}</td>
+                    <td className="py-3 px-5 text-xs font-medium text-blue-gray-600" title={product.description}>{product.description.length > 10 ? `${product.description.slice(0, 19)}...` : product.description}</td>
+                    <td className="py-3 px-5 text-xs font-medium text-blue-gray-600">${product.price}</td>
+                    <td className="py-3 px-5 text-xs font-medium text-blue-gray-600">{product.sizes.join(", ")}</td>
+                    <td className="py-3 px-5 text-xs font-medium text-blue-gray-600">{product.colors.join(", ")}</td>
+                    <td className="py-3 px-5 text-xs font-medium text-blue-gray-600">{product.fabric}</td>
+                    <td className="py-3 px-5 text-xs font-medium text-blue-gray-600">{product.category}</td>
+                    <td className="py-3 px-5 text-xs font-medium text-blue-gray-600">{product.ratings}</td>
+                    <td className="py-3 px-5 text-xs font-medium text-blue-gray-600">
                       <div className="flex items-center gap-2">
                         <PencilIcon className="h-4 w-4 text-gray-600 cursor-pointer" />
                         <TrashIcon className="h-4 w-4 text-red-500 cursor-pointer" />
