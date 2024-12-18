@@ -59,12 +59,12 @@ export function DashboardNavbar() {
         </div>
 
         <div className="flex items-center">
-          {
+          {/* {
             url !== pathname &&
             <div className="mr-auto md:mr-4 md:w-56">
               <Input label="Search" type="search" value={search} onChange={(e) => dispatchh(setSearch(e.target.value))} />
             </div>
-          }
+          } */}
           <IconButton
             variant="text"
             color="blue-gray"

@@ -72,7 +72,7 @@ import {
                   <Typography>No data available.</Typography>
                 </div>
               ) : (
-                <div className="overflow-x-auto min-h-[70vh]">
+                <div className="overflow-x-auto min-h-[65vh]">
                   <table className="w-full table-auto border-collapse">
                     <thead>
                       <tr className="bg-gray-100">

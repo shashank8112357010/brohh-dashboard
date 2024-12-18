@@ -42,8 +42,7 @@ export const routes = [
       { icon: <QuestionMarkCircleIcon {...icon} />, name: "Help", path: "/help", element: <Help /> },
       { icon: <PaintBrushIcon {...icon} />, name: "Style", path: "/style", element: <Style /> },
       { icon: <UserGroupIcon {...icon} />, name: "Influencers", path: "/influencer", element: <Influencer /> },
-      { icon: <PuzzlePieceIcon {...icon} />, name: "Combination", path: "/combination", element: <Combination /> },
-      { icon: <StarIcon {...icon} />, name: "Review", path: "/review", element: <Review /> },
+      // { icon: <StarIcon {...icon} />, name: "Review", path: "/review", element: <Review /> },
     ],
   },
 ];

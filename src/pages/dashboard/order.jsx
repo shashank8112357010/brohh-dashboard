@@ -13,8 +13,6 @@ import {
   export function Order() {
     const [orderData, setOrderData] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [currentPage, setCurrentPage] = useState(1);
-    const rowsPerPage = 10;
   
     const getOrderData = () => {
       GetOrdersService()
@@ -45,20 +43,7 @@ import {
 
 
 
-    // Calculate pagination
-    const totalPages = Math.ceil(orderData.length / rowsPerPage);
-    const currentData = orderData.slice(
-      (currentPage - 1) * rowsPerPage,
-      currentPage * rowsPerPage
-    );
   
-    const handleNext = () => {
-      if (currentPage < totalPages) setCurrentPage(currentPage + 1);
-    };
-  
-    const handlePrevious = () => {
-      if (currentPage > 1) setCurrentPage(currentPage - 1);
-    };
   
     return (
       <>
@@ -78,7 +63,7 @@ import {
               ) : orderData.length === 0 ? (
                 <NoData />
               ) : (
-                <div className="overflow-x-auto min-h-[70vh]">
+                <div className="overflow-x-auto min-h-[65vh]">
                   <table className="w-full table-auto border-collapse">
                     <thead>
                       <tr className="bg-gray-100">
@@ -108,9 +93,9 @@ import {
                       </tr>
                     </thead>
                     <tbody>
-                      {currentData.map((order, key) => (
+                      {orderData.map((order, key) => (
                         <tr key={order.orderId} className="hover:bg-gray-50">
-                          <td className="py-3 px-5">{`ORD-${order.orderId}`}</td>
+                          <td className="py-3 px-5">{order.orderId}</td>
                           <td className="py-3 px-5">{"N/A"}</td>
                           <td className="py-3 px-5">{"N/A"}</td>
                           <td className="py-3 px-5">{"N/A"}</td>
@@ -143,30 +128,7 @@ import {
                       ))}
                     </tbody>
                   </table>
-                  {/* Pagination */}
-                  <div className="flex justify-between items-center mt-4 px-4">
-                    <Button
-                      disabled={currentPage === 1}
-                      onClick={handlePrevious}
-                      variant="gradient"
-                      color="blue-gray"
-                      className="px-4 py-2"
-                    >
-                      Previous
-                    </Button>
-                    <Typography variant="small" className="text-gray-600">
-                      Page {currentPage} of {totalPages}
-                    </Typography>
-                    <Button
-                      disabled={currentPage === totalPages}
-                      onClick={handleNext}
-                      variant="gradient"
-                      color="blue-gray"
-                      className="px-4 py-2"
-                    >
-                      Next
-                    </Button>
-                  </div>
+                
                 </div>
               )}
             </CardBody>

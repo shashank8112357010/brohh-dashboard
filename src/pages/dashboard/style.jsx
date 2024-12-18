@@ -66,7 +66,7 @@ export function Style() {
                 <SyncLoader  size={8}  />
               </Typography>
             ) : (
-              <table className="w-full min-w-[640px] table-auto">
+              <table className="w-full min-w-[640px] table-auto min-h-[60vh]">
                 <thead>
                   <tr>
                     {["name", "image", "influencers"].map((el) => (
@@ -86,7 +86,9 @@ export function Style() {
                 </thead>
                 <tbody>
                   {styles.map(({ name, image, influencerId, _id }, key) => {
-                    const className = `py-3 px-5 ${
+
+
+                    const className = ` px-5 ${
                       key === styles.length - 1 ? "" : "border-b border-blue-gray-50"
                     }`;
 
