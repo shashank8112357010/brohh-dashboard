@@ -1,120 +1,127 @@
-import { setPopup } from "@/store/slice/dashboardSlice";
-import { Card, CardHeader, CardBody, Typography, Chip, } from "@material-tailwind/react";
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-
-
-
-const projectsData = [
-    { title: "Material XD Version", client: "Pranav Bhardwaj", freelancer: "Mohit Jadega", budget: 98000, status: "Completed" },
-    { title: "Website Redesign", client: "Alex Thompson", freelancer: "Emily Carter", budget: 75000, status: "In Progress" },
-    { title: "Mobile App Development", client: "Sophie Williams", freelancer: "Daniel Anderson", budget: 120000, status: "Completed" },
-    { title: "E-commerce Platform", client: "Michael Johnson", freelancer: "Olivia Brown", budget: 150000, status: "Completed" },
-    { title: "Logo Design", client: "Aria Davis", freelancer: "Ethan White", budget: 50000, status: "In Progress" }
-]
-
+import { useEffect, useState } from "react";
+import { GetInfluencerService, GetStyleService, PostStyleService } from "@/services/api.service";
+import { Card, CardHeader, CardBody, Typography } from "@material-tailwind/react";
+import { StyleFormModal } from "@/components/StyleFormModal";
+import { SyncLoader } from "react-spinners";
 
 
 export function Style() {
-    const dispatch = useDispatch()
-    // useEffect(() => {
-    //     dispatch(setPopup({ message: "In Project section", type: "info" }))
-    // }, [])
+  const [loading, setLoading] = useState(true);
+  const [influencers, setInfluencers] = useState([]);
+  const [styles, setStyles] = useState([]);
 
-    return (
-        <>
-            <div className="mt-12 mb-8 flex flex-col gap-12">
-                <Card>
-                    <CardHeader variant="gradient" color="gray" className="mb-8 p-6">
-                        <Typography variant="h6" color="white">
-                        Style
+  const fetchAllStyles = async () => {
+    setLoading(true);
+    await GetStyleService()
+      .then((res) => {
+        setStyles(res.data.data || []);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setLoading(false);
+      });
+  };
+
+  const fetchAllInfluencers = async () => {
+    await GetInfluencerService()
+      .then((res) => {
+        console.log(res);
+        setInfluencers(res.data.data || []);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
+  const handleStyleCreated = () => {
+    fetchAllStyles(); // Refresh the styles list after a new style is created
+  };
+
+  useEffect(() => {
+    fetchAllInfluencers();
+    fetchAllStyles();
+  }, []);
+
+  return (
+    <>
+      <div className="mt-12 mb-8 flex flex-col gap-12">
+        <Card>
+          <CardHeader variant="gradient" color="gray" className="mb-8 p-6">
+            <Typography variant="h6" color="white">
+              Styles
+            </Typography>
+          </CardHeader>
+          <div className="px-4 flex justify-end">
+            <StyleFormModal
+              btnText="Create Style"
+              title="Create Style"
+              influencers={influencers || []}
+              onStyleCreated={handleStyleCreated}
+            />
+          </div>
+          <CardBody className="overflow-x-scroll px-0 pt-0 pb-2">
+            {loading ? (
+              <Typography variant="small" className="text-blue-gray-600 text-center">
+                <SyncLoader  size={8}  />
+              </Typography>
+            ) : (
+              <table className="w-full min-w-[640px] table-auto">
+                <thead>
+                  <tr>
+                    {["name", "image", "influencers"].map((el) => (
+                      <th
+                        key={el}
+                        className="border-b border-blue-gray-50 py-3 px-5 text-left"
+                      >
+                        <Typography
+                          variant="small"
+                          className="text-[11px] font-bold uppercase text-blue-gray-400"
+                        >
+                          {el}
                         </Typography>
-                    </CardHeader>
-                    <CardBody className="overflow-x-scroll px-0 pt-0 pb-2">
-                        <table className="w-full min-w-[640px] table-auto">
-                            <thead>
-                                <tr>
-                                    {["title", "client", "freelancer", "budget", "status"].map(
-                                        (el) => (
-                                            <th
-                                                key={el}
-                                                className="border-b border-blue-gray-50 py-3 px-5 text-left"
-                                            >
-                                                <Typography
-                                                    variant="small"
-                                                    className="text-[11px] font-bold uppercase text-blue-gray-400"
-                                                >
-                                                    {el}
-                                                </Typography>
-                                            </th>
-                                        )
-                                    )}
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {projectsData.map(
-                                    ({ title, client, freelancer, budget, status }, key) => {
-                                        const className = `py-3 px-5 ${key === projectsData.length - 1
-                                            ? ""
-                                            : "border-b border-blue-gray-50"
-                                            }`;
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {styles.map(({ name, image, influencerId, _id }, key) => {
+                    const className = `py-3 px-5 ${
+                      key === styles.length - 1 ? "" : "border-b border-blue-gray-50"
+                    }`;
 
-                                        return (
-                                            <tr key={title}>
-                                                <td className={className}>
-                                                    <div className="flex items-center gap-4">
-                                                        <Typography
-                                                            variant="small"
-                                                            color="blue-gray"
-                                                            className="font-bold"
-                                                        >
-                                                            {title}
-                                                        </Typography>
-                                                    </div>
-                                                </td>
-                                                <td className={className}>
-                                                    <Typography
-                                                        variant="small"
-                                                        className="text-xs font-medium text-blue-gray-600"
-                                                    >
-                                                        {client}
-                                                    </Typography>
-                                                </td>
-                                                <td className={className}>
-                                                    <Typography
-                                                        variant="small"
-                                                        className="text-xs font-medium text-blue-gray-600"
-                                                    >
-                                                        {freelancer}
-                                                    </Typography>
-                                                </td>
-                                                <td className={className}>
-                                                    <Typography
-                                                        variant="small"
-                                                        className="text-xs font-medium text-blue-gray-600"
-                                                    >
-                                                        {budget}
-                                                    </Typography>
-                                                </td>
-                                                <td className={className}>
-                                                    <Chip
-                                                        variant="gradient"
-                                                        color={status === "Completed" ? "green" : "blue-gray"}
-                                                        value={status}
-                                                        className="py-0.5 px-2 text-[11px] font-medium w-fit"
-                                                    />
-                                                </td>
-                                            </tr>
-                                        );
-                                    }
-                                )}
-                            </tbody>
-                        </table>
-                    </CardBody>
-                </Card>
-            </div>
-        </>
-    );
+                    return (
+                      <tr key={_id}>
+                        <td className={className}>
+                          <Typography variant="small" color="blue-gray" className="font-bold">
+                            {name}
+                          </Typography>
+                        </td>
+                        <td className={className}>
+                          <img
+                            src={image}
+                            alt={name}
+                            className="h-10 w-10 rounded-full"
+                          />
+                        </td>
+                        <td className={className}>
+                          <Typography variant="small" className="text-xs text-blue-gray-600">
+                            {influencerId.length
+                              ? influencerId.join(", ")
+                              : "No Influencers"}
+                          </Typography>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            )}
+          </CardBody>
+        </Card>
+      </div>
+    </>
+  );
 }
 
 export default Style;

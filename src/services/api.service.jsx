@@ -89,7 +89,7 @@ export const MarkStatusDoneHelpService = (helpId) => {
 //styles 
 
 export const PostStyleService = (data) => {
-    return apiAdmin.post("/style", data, {
+    return apiAdmin.post("/styles", data, {
         headers: {
             "Content-Type": "multipart/form-data", // This is optional as Axios will set it automatically
         }
@@ -97,7 +97,7 @@ export const PostStyleService = (data) => {
 };
 
 export const GetStyleService = () => {
-    return apiAdmin.get("/style");
+    return apiAdmin.get("/styles");
 };
 
 
