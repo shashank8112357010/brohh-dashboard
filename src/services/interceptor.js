@@ -6,7 +6,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 
 // API Base URL
 // const API_URL = "https://actl.co.in/pritam";
-const API_URL = "http://localhost:4333/pritam/api"
+const API_URL = import.meta.env.VITE_BACKEND_PORT_DEVELOPMENT
 
 // Create Axios instance
 const apiAdmin = axios.create({
@@ -33,8 +33,9 @@ const isTokenExpired = (token) => {
 // Request Interceptor
 apiAdmin.interceptors.request.use(
     (config) => {
-        const token = getToken()
 
+       
+        const token = getToken()
         // If token exists, add it to the Authorization header
         if (token && !isTokenExpired(token)) {
             config.headers["Authorization"] = `Bearer ${token}`;

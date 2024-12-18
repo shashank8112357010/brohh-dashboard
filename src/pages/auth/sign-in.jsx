@@ -31,11 +31,9 @@ export function SignIn() {
       dispatch(setPopup({ message: "Logged In Successfully" || "Server Error", type: "success" }))
 
       navigate("/dashboard/home")
-      console.log(res);
     }).catch((err) => {
       dispatch(setPopup({ message: err.response.data.message || "Server Error", type: "error" }))
       setLoading(false)
-      console.log(err);
     })
 
   }

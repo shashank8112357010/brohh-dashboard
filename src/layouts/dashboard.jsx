@@ -20,11 +20,11 @@ export function Dashboard() {
   const dispatchh = useDispatch()
 
 
+  useEffect(() => {
+
     if(!getToken()){
       navigate("/auth/sign-in")
     }
-
-  useEffect(() => {
     dispatchh(setSearch(""))
   }, [pathname]);
 
