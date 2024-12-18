@@ -118,15 +118,15 @@ export const EditStyleService = (data, styleId) => {
 // testimonial 
 
 export const GetTestimonialService = () => {
-    return apiAdmin.get("/testimonial");
+    return apiAdmin.get("/testimonials");
 };
 
 export const PostTestimonialService = (data) => {
-    return apiAdmin.post("/testimonial", data);
+    return apiAdmin.post("/testimonials", data);
 };
 
 export const DeleteTestimonialService = () => {
-    return apiAdmin.delete("/testimonial");
+    return apiAdmin.delete("/testimonials");
 };
 
 
