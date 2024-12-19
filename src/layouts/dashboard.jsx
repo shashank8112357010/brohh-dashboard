@@ -31,12 +31,6 @@ export function Dashboard() {
     dispatchh(setSearch(''))
   }, [pathname])
 
-  useEffect(() => {
-    setTimeout(() => {
-      dispatchh(setUserName('Amit '))
-    }, 4000)
-  }, [])
-
   return (
     <div className="min-h-screen bg-blue-gray-50/50">
       <Sidenav

@@ -63,7 +63,7 @@ export function Blogs() {
               <table className="w-full min-w-[640px] table-auto">
                 <thead>
                   <tr>
-                    {['Title','Image' , 'Description', 'Posted On' ].map(
+                    {['Title', 'Image', 'Description', 'Posted On'].map(
                       (header) => (
                         <th
                           key={header}
@@ -125,7 +125,6 @@ export function Blogs() {
                               {new Date(postedOn).toLocaleDateString()}
                             </Typography>
                           </td>
-                        
                         </tr>
                       )
                     }

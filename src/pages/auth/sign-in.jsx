@@ -51,8 +51,8 @@ export function SignIn() {
   }
 
   return (
-    <section className=" flex gap-4">
-      <div className="w-[100%] lg:w-[60%] mt-24">
+    <section className=" flex justify-center items-center gap-4">
+      <div className="w-[70%] mt-24">
         <div className="text-center">
           <Typography variant="h2" className="font-bold mb-4">
             Sign In
@@ -126,12 +126,6 @@ export function SignIn() {
             {isLoading ? <SyncLoader size={8} color="#fff" /> : 'Sign In'}
           </Button>
         </form>
-      </div>
-      <div className="lg:w-[25%] mt-7 h-[580px] hidden lg:block">
-        <img
-          src="/gif/logo.gif"
-          className="h-[580px] w-full object-cover rounded-3xl"
-        />
       </div>
     </section>
   )
