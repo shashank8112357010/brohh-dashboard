@@ -43,7 +43,7 @@ export function Testimonial() {
             </Typography>
           </CardHeader>
 
-          <div className="px-4 flex justify-end">
+          <div className="px-4 my-5 flex justify-end">
             <TestimonialFormModal getTestimonial={getTestimonial}/>
           </div>
 

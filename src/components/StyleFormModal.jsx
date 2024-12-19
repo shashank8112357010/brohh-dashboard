@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Dialog,
@@ -11,6 +11,8 @@ import {
   Option,
 } from "@material-tailwind/react";
 import { PostStyleService } from "@/services/api.service";
+import { setPopup } from "@/store/slice/dashboardSlice";
+import { useDispatch } from "react-redux";
 
 export function StyleFormModal({ btnText, title, influencers, onStyleCreated }) {
   const [open, setOpen] = useState(false);
@@ -21,6 +23,7 @@ export function StyleFormModal({ btnText, title, influencers, onStyleCreated }) 
     influencerId: [],
   });
   const [error, setError] = useState("");
+  const dispatch = useDispatch()
 
   const handleOpen = () => setOpen(!open);
 
@@ -68,9 +71,11 @@ export function StyleFormModal({ btnText, title, influencers, onStyleCreated }) 
           onStyleCreated(); // Callback to refresh styles list
           handleOpen(); // Close modal
           setFormData({ name: "", image: null, influencerId: [] }); // Reset form
+          dispatch(setPopup({ message: "Style created successfully", type: "success" }))
         })
         .catch((err) => {
           console.log(err);
+          dispatch(setPopup({ message: "Failed to create style. Please try again.", type: "error" }))
         });
     } catch (err) {
       console.error(err);
@@ -79,12 +84,13 @@ export function StyleFormModal({ btnText, title, influencers, onStyleCreated }) 
     }
   };
 
+
   return (
     <>
       <Button onClick={handleOpen} variant="gradient">
         {btnText}
       </Button>
-      <Dialog open={open} handler={handleOpen}>
+      <Dialog open={open} handler={handleOpen} className="">
         <DialogHeader>{title}</DialogHeader>
         <DialogBody>
           <div className="space-y-4">

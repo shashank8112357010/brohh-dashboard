@@ -30,9 +30,9 @@ const ToastContainer = ({ message, type, showMessage, setShowMessage }) => {
     }, [type])
 
     return (
-        <div className={`z-50 fixed mx-auto w-full flex justify-center transition-all duration-300 ease-in-out ${showMessage ? "top-12" : "-top-20 fade-out "}`}>
+        <div className={`z-[999] fixed mx-auto w-full flex justify-center transition-all duration-300 ease-in-out ${showMessage ? "top-12" : "-top-20 fade-out "}`}>
             {showMessage && (
-                <div className={`${showMessage ? "visible" : "hidden"}`}>
+                <div className={`${showMessage ? "visible z-50" : "hidden"}`}>
                     <div className={`w-[300px] sm:w-[350px] md:w-[400px] flex justify-between rounded-lg px-6 py-6 gap-[16px]`} role='alert'
                         style={{ backgroundColor: bgColor }}
                     >

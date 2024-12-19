@@ -6,17 +6,20 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import PropTypes from "prop-types";
+import SyncLoader from "react-spinners/SyncLoader"; // Import SyncLoader
 
-export function StatisticsCard({ color, icon, title, value, footer }) {
+export function StatisticsCard({ color, icon, title, value, footer, loading }) {
+  console.log(icon);
   return (
-    <Card className="border border-blue-gray-100 shadow-sm">
+    <Card className="border border-blue-gray-100 shadow-sm h-40"> {/* Fixed height for card */}
       <CardHeader
         variant="gradient"
-        color={color}
+        color={"gray"}
         floated={false}
-        shadow={false}
+        shadow={true}
         className="absolute grid h-12 w-12 place-items-center"
       >
+        {/* Show SyncLoader for the icon when loading */}
         {icon}
       </CardHeader>
       <CardBody className="p-4 text-right">
@@ -24,7 +27,12 @@ export function StatisticsCard({ color, icon, title, value, footer }) {
           {title}
         </Typography>
         <Typography variant="h4" color="blue-gray">
-          {value}
+          {/* Show SyncLoader for the value while loading */}
+          {loading ? (
+            <SyncLoader color={"#000"} size={8} />
+          ) : (
+            value // Show the actual value when data is loaded
+          )}
         </Typography>
       </CardBody>
       {footer && (
@@ -68,6 +76,7 @@ StatisticsCard.propTypes = {
   title: PropTypes.node.isRequired,
   value: PropTypes.node.isRequired,
   footer: PropTypes.node,
+  loading: PropTypes.bool, // Add loading prop to conditionally render loader
 };
 
 StatisticsCard.displayName = "/src/widgets/cards/statistics-card.jsx";

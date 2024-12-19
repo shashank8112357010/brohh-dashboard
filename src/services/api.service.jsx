@@ -24,6 +24,12 @@ export const GetProductService = () => {
 };
 
 
+export const FetchProductIdsService = () => {
+    return apiAdmin.get("/products/ids");
+};
+
+
+
 // influencers ======> 
 
 
@@ -155,6 +161,14 @@ export const PostCombinationService = (data) => {
 
 export const getIndividualCombinationService = (baseProductId) => {
     return apiAdmin.post(`/combinations/${baseProductId}`);
+};
+
+
+
+// dashboard 
+
+export const GetDashboardCountService = () => {
+    return apiAdmin.get("/dashboard/count");
 };
 
 

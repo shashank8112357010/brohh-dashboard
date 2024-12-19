@@ -9,12 +9,15 @@ import {
 } from "@material-tailwind/react";
 import SyncLoader from "react-spinners/SyncLoader";
 import { PostTestimonialService } from "@/services/api.service"; // Ensure the correct path to your API service
+import { setPopup } from "@/store/slice/dashboardSlice";
+import { useDispatch } from "react-redux";
 
 export function TestimonialFormModal({getTestimonial}) {
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
   
 
   const handleOpen = () => setOpen(!open);
@@ -30,10 +33,12 @@ export function TestimonialFormModal({getTestimonial}) {
         setName("");
         setMessage("");
         getTestimonial()
+        dispatch(setPopup({ message: "testimonial created successfully", type: "success" }))
       })
       .catch((error) => {
         console.error("Error submitting testimonial:", error);
-        alert("Failed to submit testimonial. Please try again."); // Replace with your error notification
+        dispatch(setPopup({ message: "Failed to create testimonial. Please try again.", type: "error" }))
+        // alert("Failed to submit testimonial. Please try again."); // Replace with your error notification
       })
       .finally(() => {
         setLoading(false);

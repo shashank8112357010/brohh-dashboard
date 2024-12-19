@@ -3,106 +3,92 @@ import {
   UserPlusIcon,
   UsersIcon,
   ChartBarIcon,
+  DocumentTextIcon, // For Blogs
+  HandThumbUpIcon, // For Help Requests
+  DocumentMagnifyingGlassIcon, // For Testimonials
+  ShieldCheckIcon, // For Style
+  ShoppingCartIcon,
+  BookOpenIcon,
+  ChatBubbleLeftEllipsisIcon,
+  UserGroupIcon, // For Orders
 } from "@heroicons/react/24/solid";
 
 export const statisticsCardsData = [
   {
     color: "gray",
-    icon: UsersIcon,
+    icon: ShoppingCartIcon,  // You can change the icon for products if needed
     title: "Products",
-    value: "6",
+    value: "6",  // This will be dynamically updated
     footer: {
       color: "text-green-500",
       value: "",
-      label: "last updated 20/8/24",
+      label: "last updated ...",
     },
   },
   {
     color: "gray",
-    icon: UsersIcon,
+    icon: ShoppingCartIcon,  // Icon for Orders
     title: "Orders",
-    value: "0",
+    value: "0",  // This will be dynamically updated
     footer: {
       color: "text-green-500",
       value: "",
-      label: "last updated 20/8/24",
+      label: "last updated ...",
     },
   },
   {
     color: "gray",
-    icon: UserPlusIcon,
+    icon: UserGroupIcon,  // Icon for Influencers
     title: "Influencers",
-    value: "0",
+    value: "0",  // This will be dynamically updated
     footer: {
       color: "text-red-500",
       value: "",
-      label: "last updated 20/8/24",
+      label: "last updated ...",
     },
   },
   {
     color: "gray",
-    icon: ChartBarIcon,
+    icon: ChatBubbleLeftEllipsisIcon,  // Icon for Testimonial
     title: "Testimonial",
-    value: "0",
+    value: "0",  // This will be dynamically updated
     footer: {
       color: "text-green-500",
       value: "",
-      label: "last updated 20/8/24",
+      label: "last updated ...",
     },
   },
   {
     color: "gray",
-    icon: ChartBarIcon,
-    title: "help",
-    value: "0",
+    icon: HandThumbUpIcon,  // Icon for Help Requests
+    title: "Help",
+    value: "0",  // This will be dynamically updated
     footer: {
       color: "text-green-500",
       value: "",
-      label: "last updated 20/8/24",
+      label: "last updated ...",
     },
   },
   {
     color: "gray",
-    icon: ChartBarIcon,
+    icon: ShieldCheckIcon,  // Icon for Style
     title: "Style",
-    value: "0",
+    value: "0",  // This will be dynamically updated
     footer: {
       color: "text-green-500",
       value: "",
-      label: "last updated 20/8/24",
+      label: "last updated ...",
     },
   },
   {
     color: "gray",
-    icon: ChartBarIcon,
-    title: "Combination",
-    value: "0",
-    footer: {
-      color: "text-green-500",
-      value: "",
-      label: "last updated 20/8/24",
-    },
-  },
-  {
-    color: "gray",
-    icon: ChartBarIcon,
-    title: "Review",
-    value: "0",
-    footer: {
-      color: "text-green-500",
-      value: "",
-      label: "last updated 20/8/24",
-    },
-  },
-  {
-    color: "gray",
-    icon: ChartBarIcon,
+    icon: BookOpenIcon,  // Icon for Blogs
     title: "Blogs",
-    value: "0",
+    value: "0",  // This will be dynamically updated
     footer: {
       color: "text-green-500",
       value: "",
-      label: "last updated 20/8/24",
+      label: "last updated ...",
     },
   },
 ];

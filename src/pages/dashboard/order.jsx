@@ -10,10 +10,13 @@ import {
   import { GetOrdersService, MarkStatusDoneOrdersService } from "@/services/api.service";
   import { SyncLoader } from "react-spinners";
   import NoData from "@/components/NoData";
+import { setPopup } from "@/store/slice/dashboardSlice";
+import { useDispatch } from "react-redux";
   
   export function Order() {
     const [orderData, setOrderData] = useState([]);
     const [loading, setLoading] = useState(true);
+    const dispatch = useDispatch()
   
     const getOrderData = () => {
       GetOrdersService()
@@ -36,8 +39,10 @@ import {
     const handleMarkDelivered= async (orderId)=>{
         await MarkStatusDoneOrdersService(orderId).then(()=>{
             getOrderData()
+            dispatch(setPopup({ message: "Marked Dilivered ", type: "success" }))
         }).catch((err)=>{
             console.log(err)
+            dispatch(setPopup({ message: "Failed to mark order, Please try again ", type: "error" }))
         })
     }
 

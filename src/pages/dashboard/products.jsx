@@ -13,6 +13,7 @@ import { SyncLoader } from "react-spinners";
 import NoData from "@/components/NoData";
 import axios from "axios";
 import { GetProductService, PostProductService } from "@/services/api.service";
+import { setPopup } from "@/store/slice/dashboardSlice";
 
 export function Products() {
   const [isFormVisible, setIsFormVisible] = useState(false);
@@ -31,20 +32,7 @@ export function Products() {
   const [products, setProducts] = useState([]);
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   const fetchProducts = async () => {
-  //     try {
-  //       setLoading(true);
-  //       const response = await axios.get("/api/products");
-  //       setProducts(response.data.products);
-  //       setLoading(false);
-  //     } catch (error) {
-  //       console.error("Error fetching products:", error);
-  //       setLoading(false);
-  //     }
-  //   };
-  //   fetchProducts();
-  // }, []);
+
 
 
   const fetchProducts = async () => {
@@ -91,17 +79,20 @@ export function Products() {
       await PostProductService(formData)
         .then((res) => {
           console.log(res);
-
+          dispatch(setPopup({ message: "Product created successfully", type: "success" }))
           fetchProducts()
           setIsFormVisible(false)
           setLoading(false);
         })
         .catch((err) => {
           console.log(err);
+        dispatch(setPopup({ message: "Failed to create Product, Please try again ", type: "error" }))
+
         });
       setLoading(false);
     } catch (error) {
       console.error("Error uploading product:", error);
+      dispatch(setPopup({ message: "Failed to create Product, Please try again ", type: "error" }))
       setLoading(false);
     }
   };

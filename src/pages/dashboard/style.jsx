@@ -63,7 +63,7 @@ export function Style() {
           <CardBody className="overflow-x-scroll px-0 pt-0 pb-2">
             {loading ? (
               <Typography variant="small" className="text-blue-gray-600 text-center">
-                <SyncLoader  size={8}  />
+                <SyncLoader color="#000" size={15}  />
               </Typography>
             ) : (
               <table className="w-full min-w-[640px] table-auto min-h-[60vh]">
