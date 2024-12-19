@@ -1,49 +1,58 @@
-import React, { useState } from "react";
+import React, { useState } from 'react'
 import {
   Button,
   Dialog,
   DialogHeader,
   DialogBody,
   DialogFooter,
-  Input,
-} from "@material-tailwind/react";
-import SyncLoader from "react-spinners/SyncLoader";
-import { PostTestimonialService } from "@/services/api.service"; // Ensure the correct path to your API service
-import { setPopup } from "@/store/slice/dashboardSlice";
-import { useDispatch } from "react-redux";
+  Input
+} from '@material-tailwind/react'
+import SyncLoader from 'react-spinners/SyncLoader'
+import { PostTestimonialService } from '@/services/api.service' // Ensure the correct path to your API service
+import { setPopup } from '@/store/slice/dashboardSlice'
+import { useDispatch } from 'react-redux'
 
-export function TestimonialFormModal({getTestimonial}) {
-  const [open, setOpen] = useState(false);
-  const [name, setName] = useState("");
-  const [message, setMessage] = useState("");
-  const [loading, setLoading] = useState(false);
-  const dispatch = useDispatch();
-  
+export function TestimonialFormModal({ getTestimonial }) {
+  const [open, setOpen] = useState(false)
+  const [name, setName] = useState('')
+  const [message, setMessage] = useState('')
+  const [loading, setLoading] = useState(false)
+  const dispatch = useDispatch()
 
-  const handleOpen = () => setOpen(!open);
+  const handleOpen = () => setOpen(!open)
 
   const handleSubmit = () => {
-    setLoading(true);
-    const data = { name, message };
+    setLoading(true)
+    const data = { name, message }
 
     PostTestimonialService(data)
       .then(() => {
         // alert("Testimonial submitted successfully!"); // Replace with your success notification
-        handleOpen();
-        setName("");
-        setMessage("");
+        handleOpen()
+        setName('')
+        setMessage('')
         getTestimonial()
-        dispatch(setPopup({ message: "testimonial created successfully", type: "success" }))
+        dispatch(
+          setPopup({
+            message: 'testimonial created successfully',
+            type: 'success'
+          })
+        )
       })
       .catch((error) => {
-        console.error("Error submitting testimonial:", error);
-        dispatch(setPopup({ message: "Failed to create testimonial. Please try again.", type: "error" }))
+        console.error('Error submitting testimonial:', error)
+        dispatch(
+          setPopup({
+            message: 'Failed to create testimonial. Please try again.',
+            type: 'error'
+          })
+        )
         // alert("Failed to submit testimonial. Please try again."); // Replace with your error notification
       })
       .finally(() => {
-        setLoading(false);
-      });
-  };
+        setLoading(false)
+      })
+  }
 
   return (
     <>
@@ -84,12 +93,12 @@ export function TestimonialFormModal({getTestimonial}) {
             onClick={handleSubmit}
             disabled={loading || !name || !message}
           >
-            {loading ? <SyncLoader size={8} color="#fff" /> : "Submit"}
+            {loading ? <SyncLoader size={8} color="#fff" /> : 'Submit'}
           </Button>
         </DialogFooter>
       </Dialog>
     </>
-  );
+  )
 }
 
-export default TestimonialFormModal;
+export default TestimonialFormModal

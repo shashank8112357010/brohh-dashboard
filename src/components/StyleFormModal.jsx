@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from 'react'
 import {
   Button,
   Dialog,
@@ -6,84 +6,93 @@ import {
   DialogBody,
   DialogFooter,
   Input,
-  Typography,
-  Select,
-  Option,
-} from "@material-tailwind/react";
-import { PostStyleService } from "@/services/api.service";
-import { setPopup } from "@/store/slice/dashboardSlice";
-import { useDispatch } from "react-redux";
+  Typography
+} from '@material-tailwind/react'
+import { PostStyleService } from '@/services/api.service'
+import { setPopup } from '@/store/slice/dashboardSlice'
+import { useDispatch } from 'react-redux'
 
-export function StyleFormModal({ btnText, title, influencers, onStyleCreated }) {
-  const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
+export function StyleFormModal({
+  btnText,
+  title,
+  influencers,
+  onStyleCreated
+}) {
+  const [open, setOpen] = useState(false)
+  const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
-    name: "",
+    name: '',
     image: null,
-    influencerId: [],
-  });
-  const [error, setError] = useState("");
+    influencerId: []
+  })
+  const [error, setError] = useState('')
   const dispatch = useDispatch()
 
-  const handleOpen = () => setOpen(!open);
+  const handleOpen = () => setOpen(!open)
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+    const { name, value } = e.target
+    setFormData((prev) => ({ ...prev, [name]: value }))
+  }
 
   const handleFileChange = (e) => {
-    const file = e.target.files[0];
+    const file = e.target.files[0]
     if (file.size > 1024 * 1024) {
-      setError("Image size must be under 1 MB");
-      return;
+      setError('Image size must be under 1 MB')
+      return
     }
-    setError("");
-    setFormData((prev) => ({ ...prev, image: file }));
-  };
+    setError('')
+    setFormData((prev) => ({ ...prev, image: file }))
+  }
 
   const handleInfluencerChange = (id) => {
     setFormData((prev) => {
       const selected = prev.influencerId.includes(id)
         ? prev.influencerId.filter((infId) => infId !== id)
-        : [...prev.influencerId, id];
-      return { ...prev, influencerId: selected };
-    });
-  };
+        : [...prev.influencerId, id]
+      return { ...prev, influencerId: selected }
+    })
+  }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     if (!formData.image) {
-      setError("Please upload a valid image under 1 MB.");
-      return;
+      setError('Please upload a valid image under 1 MB.')
+      return
     }
 
-    setLoading(true);
-    const formDataToSend = new FormData();
-    formDataToSend.append("style_name", formData.name);
-    formDataToSend.append("image", formData.image);
-    formDataToSend.append("influencerId", JSON.stringify(formData.influencerId));
+    setLoading(true)
+    const formDataToSend = new FormData()
+    formDataToSend.append('style_name', formData.name)
+    formDataToSend.append('image', formData.image)
+    formDataToSend.append('influencerId', JSON.stringify(formData.influencerId))
 
     try {
       await PostStyleService(formDataToSend)
         .then((res) => {
-          console.log(res);
-          onStyleCreated(); // Callback to refresh styles list
-          handleOpen(); // Close modal
-          setFormData({ name: "", image: null, influencerId: [] }); // Reset form
-          dispatch(setPopup({ message: "Style created successfully", type: "success" }))
+          console.log(res)
+          onStyleCreated() // Callback to refresh styles list
+          handleOpen() // Close modal
+          setFormData({ name: '', image: null, influencerId: [] }) // Reset form
+          dispatch(
+            setPopup({ message: 'Style created successfully', type: 'success' })
+          )
         })
         .catch((err) => {
-          console.log(err);
-          dispatch(setPopup({ message: "Failed to create style. Please try again.", type: "error" }))
-        });
+          console.log(err)
+          dispatch(
+            setPopup({
+              message: 'Failed to create style. Please try again.',
+              type: 'error'
+            })
+          )
+        })
     } catch (err) {
-      console.error(err);
+      console.error(err)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
-
+  }
 
   return (
     <>
@@ -101,7 +110,11 @@ export function StyleFormModal({ btnText, title, influencers, onStyleCreated }) 
               value={formData.name}
               onChange={handleInputChange}
             />
-            <Input type="file" label="Style Image" onChange={handleFileChange} />
+            <Input
+              type="file"
+              label="Style Image"
+              onChange={handleFileChange}
+            />
             {error && (
               <Typography variant="small" className="text-red-500">
                 {error}
@@ -151,5 +164,5 @@ export function StyleFormModal({ btnText, title, influencers, onStyleCreated }) 
         </DialogFooter>
       </Dialog>
     </>
-  );
+  )
 }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react'
 import {
   Button,
   Dialog,
@@ -6,113 +6,131 @@ import {
   DialogBody,
   DialogFooter,
   Input,
-  Typography,
-} from "@material-tailwind/react";
-import { SyncLoader } from "react-spinners";
-import { PostInfluencerService, FetchProductIdsService } from "@/services/api.service";
-import { setPopup } from "@/store/slice/dashboardSlice";
-import { useDispatch } from "react-redux";
+  Typography
+} from '@material-tailwind/react'
+import { SyncLoader } from 'react-spinners'
+import {
+  PostInfluencerService,
+  FetchProductIdsService
+} from '@/services/api.service'
+import { setPopup } from '@/store/slice/dashboardSlice'
+import { useDispatch } from 'react-redux'
 
-export function InfluencerModal({fetchAllInfluencers}) {
-  const [open, setOpen] = useState(false);
+export function InfluencerModal({ fetchAllInfluencers }) {
+  const [open, setOpen] = useState(false)
   const dispatch = useDispatch()
-  const [loading, setLoading] = useState(false);
-  const [productLoading, setProductLoading] = useState(false);
+  const [loading, setLoading] = useState(false)
+  const [productLoading, setProductLoading] = useState(false)
   const [formData, setFormData] = useState({
-    name: "",
-    instagramHandle: "",
+    name: '',
+    instagramHandle: '',
     productIds: [],
-    image: null,
-  });
-  const [productIds, setProductIds] = useState([]);
-  const [error, setError] = useState("");
+    image: null
+  })
+  const [productIds, setProductIds] = useState([])
+  const [error, setError] = useState('')
 
-  const handleOpen = () => setOpen(!open);
+  const handleOpen = () => setOpen(!open)
 
   // Fetch Product IDs with their name and image
   useEffect(() => {
-    setProductLoading(true);
+    setProductLoading(true)
     FetchProductIdsService()
       .then((res) => {
-        setProductIds(res.data.data || []);
+        setProductIds(res.data.data || [])
       })
       .catch((err) => {
-        console.error("Error fetching product IDs:", err);
-        setError("Failed to fetch product IDs.");
+        console.error('Error fetching product IDs:', err)
+        setError('Failed to fetch product IDs.')
       })
       .finally(() => {
-        setProductLoading(false);
-      });
-  }, []);
+        setProductLoading(false)
+      })
+  }, [])
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+    const { name, value } = e.target
+    setFormData((prev) => ({ ...prev, [name]: value }))
+  }
 
   const handleFileChange = (e) => {
-    setFormData((prev) => ({ ...prev, image: e.target.files[0] }));
-  };
+    setFormData((prev) => ({ ...prev, image: e.target.files[0] }))
+  }
 
   const handleProductSelection = (productId) => {
     setFormData((prev) => {
-      const isSelected = prev.productIds.includes(productId);
+      const isSelected = prev.productIds.includes(productId)
       return {
         ...prev,
         productIds: isSelected
           ? prev.productIds.filter((id) => id !== productId)
-          : [...prev.productIds, productId],
-      };
-    });
-  };
+          : [...prev.productIds, productId]
+      }
+    })
+  }
 
   const validateForm = () => {
     if (!formData.name.trim()) {
-      setError("Name is required.");
-      return false;
+      setError('Name is required.')
+      return false
     }
     if (!formData.instagramHandle.trim()) {
-      setError("Instagram handle is required.");
-      return false;
+      setError('Instagram handle is required.')
+      return false
     }
     if (formData.productIds.length === 0) {
-      setError("At least one product ID must be selected.");
-      return false;
+      setError('At least one product ID must be selected.')
+      return false
     }
     if (!formData.image) {
-      setError("Image is required.");
-      return false;
+      setError('Image is required.')
+      return false
     }
-    setError("");
-    return true;
-  };
+    setError('')
+    return true
+  }
 
   const handleSubmit = () => {
-    if (!validateForm()) return;
+    if (!validateForm()) return
 
-    const formDataToSend = new FormData();
-    formDataToSend.append("name", formData.name);
-    formDataToSend.append("instagramHandle", formData.instagramHandle);
-    formDataToSend.append("productIds", JSON.stringify(formData.productIds));
-    formDataToSend.append("image", formData.image);
+    const formDataToSend = new FormData()
+    formDataToSend.append('name', formData.name)
+    formDataToSend.append('instagramHandle', formData.instagramHandle)
+    formDataToSend.append('productIds', JSON.stringify(formData.productIds))
+    formDataToSend.append('image', formData.image)
 
-    setLoading(true);
+    setLoading(true)
     PostInfluencerService(formDataToSend)
       .then(() => {
-        handleOpen();
+        handleOpen()
         fetchAllInfluencers()
-        dispatch(setPopup({ message: "Influencer created successfully", type: "success" }))
-        setFormData({ name: "", instagramHandle: "", productIds: [], image: null });
+        dispatch(
+          setPopup({
+            message: 'Influencer created successfully',
+            type: 'success'
+          })
+        )
+        setFormData({
+          name: '',
+          instagramHandle: '',
+          productIds: [],
+          image: null
+        })
       })
       .catch((err) => {
         // console.error("Error submitting influencer:", err);
         // setError("Failed to submit influencer.");
-        dispatch(setPopup({ message: "Failed to create Influencer. Please try again.", type: "error" }))
+        dispatch(
+          setPopup({
+            message: 'Failed to create Influencer. Please try again.',
+            type: 'error'
+          })
+        )
       })
       .finally(() => {
-        setLoading(false);
-      });
-  };
+        setLoading(false)
+      })
+  }
 
   return (
     <>
@@ -151,7 +169,10 @@ export function InfluencerModal({fetchAllInfluencers}) {
               <div className="relative">
                 <div className="overflow-y-auto max-h-48 border border-gray-300 rounded-lg">
                   {productIds.map((product) => (
-                    <div key={product.id} className="flex items-center gap-2 p-2 cursor-pointer hover:bg-gray-100">
+                    <div
+                      key={product.id}
+                      className="flex items-center gap-2 p-2 cursor-pointer hover:bg-gray-100"
+                    >
                       <input
                         type="checkbox"
                         id={`product-${product.id}`}
@@ -160,7 +181,10 @@ export function InfluencerModal({fetchAllInfluencers}) {
                         onChange={() => handleProductSelection(product.id)}
                         className="form-checkbox"
                       />
-                      <label htmlFor={`product-${product.id}`} className="flex items-center gap-2">
+                      <label
+                        htmlFor={`product-${product.id}`}
+                        className="flex items-center gap-2"
+                      >
                         <img
                           src={product.image}
                           alt={product.name}
@@ -181,16 +205,30 @@ export function InfluencerModal({fetchAllInfluencers}) {
           )}
         </DialogBody>
         <DialogFooter>
-          <Button variant="text" color="red" onClick={handleOpen} disabled={loading}>
+          <Button
+            variant="text"
+            color="red"
+            onClick={handleOpen}
+            disabled={loading}
+          >
             <span>Cancel</span>
           </Button>
-          <Button variant="gradient" color="green" onClick={handleSubmit} disabled={loading}>
-            {loading ? <SyncLoader color="#fff" size={6} /> : <span>Submit</span>}
+          <Button
+            variant="gradient"
+            color="green"
+            onClick={handleSubmit}
+            disabled={loading}
+          >
+            {loading ? (
+              <SyncLoader color="#fff" size={6} />
+            ) : (
+              <span>Submit</span>
+            )}
           </Button>
         </DialogFooter>
       </Dialog>
     </>
-  );
+  )
 }
 
-export default InfluencerModal;
+export default InfluencerModal

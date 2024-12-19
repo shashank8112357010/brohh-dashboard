@@ -1,9 +1,8 @@
-import { Routes, Route, Navigate } from "react-router-dom";
-import { Dashboard, Auth } from "@/layouts";
-import Popup from "./components/Popup";
+import { Routes, Route, Navigate } from 'react-router-dom'
+import { Dashboard, Auth } from '@/layouts'
+import Popup from './components/Popup'
 
 function App() {
-
   return (
     <>
       <Routes>
@@ -13,7 +12,7 @@ function App() {
       </Routes>
       <Popup />
     </>
-  );
+  )
 }
 
-export default App;
+export default App

@@ -1,18 +1,15 @@
-import React, { useEffect } from 'react';
-import { Button, IconButton } from "@material-tailwind/react";
-import { ArrowRightIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
+import React, { useEffect } from 'react'
+import { Button, IconButton } from '@material-tailwind/react'
+import { ArrowRightIcon, ArrowLeftIcon } from '@heroicons/react/24/outline'
 
 const Pagination = ({ freelancerData, page, setPage, limit, setLimit }) => {
-
-
   return (
     <div className="flex flex-col  items-center gap-4">
       <span className="text-[12px]  text-gray-700 dark:text-gray-400">
-        Showing {page * limit - limit + 1} to {(page * limit) < total ? (page * limit) : total} of {total} entries
+        Showing {page * limit - limit + 1} to{' '}
+        {page * limit < total ? page * limit : total} of {total} entries
       </span>
       <div className="flex  items-center gap-4 ">
-
-
         <Button
           variant="text"
           className="flex text-[10px] sm:text-[12px] items-center gap-2 rounded-full"
@@ -23,21 +20,18 @@ const Pagination = ({ freelancerData, page, setPage, limit, setLimit }) => {
         </Button>
         <div className="flex items-center gap-2">
           {[...Array(freelancerData?.totalPages)].map((_, index) => (
-
             <IconButton
               key={index + 1}
-
               onClick={() => setPage(index + 1)}
               disabled={page === index + 1}
-              className={`${page === index + 1
-                ? 'bg-black text-white'
-                : 'bg-white text-black'
-                } p-2 rounded-full`}
+              className={`${
+                page === index + 1
+                  ? 'bg-black text-white'
+                  : 'bg-white text-black'
+              } p-2 rounded-full`}
             >
               {index + 1}
             </IconButton>
-
-
           ))}
         </div>
         <Button
@@ -47,18 +41,13 @@ const Pagination = ({ freelancerData, page, setPage, limit, setLimit }) => {
           disabled={page >= freelancerData?.totalPages}
         >
           Next
-
         </Button>
       </div>
     </div>
-  );
+  )
 }
 
-
-
-export default Pagination;
-
-
+export default Pagination
 
 // const Pagination = ({ freelancerData, page, setPage, limit, setLimit }) => {
 
@@ -103,7 +92,6 @@ export default Pagination;
 
 //         return buttons;
 //     };
-
 
 //     return (
 //         <>
@@ -150,7 +138,6 @@ export default Pagination;
 
 //                 </div>
 //             </div>
-
 
 //         </>
 //     );

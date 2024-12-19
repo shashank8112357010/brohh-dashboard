@@ -3,36 +3,35 @@
 @tailwind utilities;
 
 .registerForm::-webkit-scrollbar {
-    width: 8px;
-    height: 12px;
+  width: 8px;
+  height: 12px;
 }
 
 ::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
 .registerForm::-webkit-scrollbar-thumb {
-    background-color: black;
-    border-radius: 20px;
+  background-color: black;
+  border-radius: 20px;
 }
 
 .blurred-background {
-    backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
 }
-
 
 /* //for animation  */
 
 .fade-out {
-    animation: fadeOut 5s forwards;
+  animation: fadeOut 5s forwards;
 }
 
 @keyframes fadeOut {
-    from {
-        opacity: 1;
-    }
+  from {
+    opacity: 1;
+  }
 
-    to {
-        opacity: 0;
-    }
+  to {
+    opacity: 0;
+  }
 }

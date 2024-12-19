@@ -1,47 +1,55 @@
-import { useEffect, useState } from "react";
-import { GetInfluencerService, GetStyleService, PostStyleService } from "@/services/api.service";
-import { Card, CardHeader, CardBody, Typography } from "@material-tailwind/react";
-import { StyleFormModal } from "@/components/StyleFormModal";
-import { SyncLoader } from "react-spinners";
-
+import { useEffect, useState } from 'react'
+import {
+  GetInfluencerService,
+  GetStyleService,
+  PostStyleService
+} from '@/services/api.service'
+import {
+  Card,
+  CardHeader,
+  CardBody,
+  Typography
+} from '@material-tailwind/react'
+import { StyleFormModal } from '@/components/StyleFormModal'
+import { SyncLoader } from 'react-spinners'
 
 export function Style() {
-  const [loading, setLoading] = useState(true);
-  const [influencers, setInfluencers] = useState([]);
-  const [styles, setStyles] = useState([]);
+  const [loading, setLoading] = useState(true)
+  const [influencers, setInfluencers] = useState([])
+  const [styles, setStyles] = useState([])
 
   const fetchAllStyles = async () => {
-    setLoading(true);
+    setLoading(true)
     await GetStyleService()
       .then((res) => {
-        setStyles(res.data.data || []);
-        setLoading(false);
+        setStyles(res.data.data || [])
+        setLoading(false)
       })
       .catch((err) => {
-        console.error(err);
-        setLoading(false);
-      });
-  };
+        console.error(err)
+        setLoading(false)
+      })
+  }
 
   const fetchAllInfluencers = async () => {
     await GetInfluencerService()
       .then((res) => {
-        console.log(res);
-        setInfluencers(res.data.data || []);
+        console.log(res)
+        setInfluencers(res.data.data || [])
       })
       .catch((err) => {
-        console.error(err);
-      });
-  };
+        console.error(err)
+      })
+  }
 
   const handleStyleCreated = () => {
-    fetchAllStyles(); // Refresh the styles list after a new style is created
-  };
+    fetchAllStyles() // Refresh the styles list after a new style is created
+  }
 
   useEffect(() => {
-    fetchAllInfluencers();
-    fetchAllStyles();
-  }, []);
+    fetchAllInfluencers()
+    fetchAllStyles()
+  }, [])
 
   return (
     <>
@@ -62,14 +70,17 @@ export function Style() {
           </div>
           <CardBody className="overflow-x-scroll px-0 pt-0 pb-2">
             {loading ? (
-              <Typography variant="small" className="text-blue-gray-600 text-center">
-                <SyncLoader color="#000" size={15}  />
+              <Typography
+                variant="small"
+                className="text-blue-gray-600 text-center"
+              >
+                <SyncLoader color="#000" size={15} />
               </Typography>
             ) : (
               <table className="w-full min-w-[640px] table-auto min-h-[60vh]">
                 <thead>
                   <tr>
-                    {["name", "image", "influencers"].map((el) => (
+                    {['name', 'image', 'influencers'].map((el) => (
                       <th
                         key={el}
                         className="border-b border-blue-gray-50 py-3 px-5 text-left"
@@ -86,16 +97,20 @@ export function Style() {
                 </thead>
                 <tbody>
                   {styles.map(({ name, image, influencerId, _id }, key) => {
-
-
                     const className = ` px-5 ${
-                      key === styles.length - 1 ? "" : "border-b border-blue-gray-50"
-                    }`;
+                      key === styles.length - 1
+                        ? ''
+                        : 'border-b border-blue-gray-50'
+                    }`
 
                     return (
                       <tr key={_id}>
                         <td className={className}>
-                          <Typography variant="small" color="blue-gray" className="font-bold">
+                          <Typography
+                            variant="small"
+                            color="blue-gray"
+                            className="font-bold"
+                          >
                             {name}
                           </Typography>
                         </td>
@@ -107,14 +122,17 @@ export function Style() {
                           />
                         </td>
                         <td className={className}>
-                          <Typography variant="small" className="text-xs text-blue-gray-600">
+                          <Typography
+                            variant="small"
+                            className="text-xs text-blue-gray-600"
+                          >
                             {influencerId.length
-                              ? influencerId.join(", ")
-                              : "No Influencers"}
+                              ? influencerId.join(', ')
+                              : 'No Influencers'}
                           </Typography>
                         </td>
                       </tr>
-                    );
+                    )
                   })}
                 </tbody>
               </table>
@@ -123,7 +141,7 @@ export function Style() {
         </Card>
       </div>
     </>
-  );
+  )
 }
 
-export default Style;
+export default Style

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react'
 import {
   Button,
   Dialog,
@@ -7,70 +7,78 @@ import {
   DialogFooter,
   Input,
   Textarea,
-  Typography,
-} from "@material-tailwind/react";
-import { PostBlogsService } from "@/services/api.service";
-import { SyncLoader } from "react-spinners";
-import { useDispatch } from "react-redux";
-import { setPopup } from "@/store/slice/dashboardSlice";
+  Typography
+} from '@material-tailwind/react'
+import { PostBlogsService } from '@/services/api.service'
+import { SyncLoader } from 'react-spinners'
+import { useDispatch } from 'react-redux'
+import { setPopup } from '@/store/slice/dashboardSlice'
 
-export function BlogModal({ btnText = "Add Blog", fetchBlogs }) {
-  const [open, setOpen] = useState(false);
+export function BlogModal({ btnText = 'Add Blog', fetchBlogs }) {
+  const [open, setOpen] = useState(false)
   const dispatch = useDispatch()
   const [formData, setFormData] = useState({
-    title: "",
-    description: "",
-    image: null,
-  });
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+    title: '',
+    description: '',
+    image: null
+  })
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
 
-  const handleOpen = () => setOpen(!open);
+  const handleOpen = () => setOpen(!open)
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+    const { name, value } = e.target
+    setFormData((prev) => ({ ...prev, [name]: value }))
+  }
 
   const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file && file.size > 1024 * 1024) { // Image size validation: 1 MB
-      setError("Image size must be under 1 MB.");
-      return;
+    const file = e.target.files[0]
+    if (file && file.size > 1024 * 1024) {
+      // Image size validation: 1 MB
+      setError('Image size must be under 1 MB.')
+      return
     }
-    setError("");
-    setFormData((prev) => ({ ...prev, image: file }));
-  };
+    setError('')
+    setFormData((prev) => ({ ...prev, image: file }))
+  }
 
-  const handleSubmit = async() => {
+  const handleSubmit = async () => {
     if (!formData.title || !formData.description || !formData.image) {
-      setError("All fields are required.");
-      return;
+      setError('All fields are required.')
+      return
     }
 
-    setLoading(true);
-    const dataToSend = new FormData();
-    dataToSend.append("title", formData.title);
-    dataToSend.append("description", formData.description);
-    dataToSend.append("image", formData.image);
+    setLoading(true)
+    const dataToSend = new FormData()
+    dataToSend.append('title', formData.title)
+    dataToSend.append('description', formData.description)
+    dataToSend.append('image', formData.image)
 
-  await  PostBlogsService(dataToSend)
+    await PostBlogsService(dataToSend)
       .then((res) => {
-        console.log("Blog created successfully:", res);
-        fetchBlogs(); // Callback to refresh the blogs list
-        handleOpen(); // Close modal
-        setFormData({ title: "", description: "", image: null }); // Reset form
-        dispatch(setPopup({ message: "Blogs Added Successfully", type: "success" }))
+        console.log('Blog created successfully:', res)
+        fetchBlogs() // Callback to refresh the blogs list
+        handleOpen() // Close modal
+        setFormData({ title: '', description: '', image: null }) // Reset form
+        dispatch(
+          setPopup({ message: 'Blogs Added Successfully', type: 'success' })
+        )
       })
       .catch((err) => {
-        console.error("Failed to post blog:", err);
-        dispatch(setPopup({ message: "Failed to create blog. Please try again.", type: "error" }))
+        console.error('Failed to post blog:', err)
+        dispatch(
+          setPopup({
+            message: 'Failed to create blog. Please try again.',
+            type: 'error'
+          })
+        )
         // setError("Failed to create blog. Please try again.");
       })
       .finally(() => {
-        setLoading(false);
-      });
-  };
+        setLoading(false)
+      })
+  }
 
   return (
     <>
@@ -125,10 +133,14 @@ export function BlogModal({ btnText = "Add Blog", fetchBlogs }) {
             onClick={handleSubmit}
             disabled={loading}
           >
-            {loading ?  <SyncLoader color="#4A90E2" size={4} /> : <span>Submit</span>}
+            {loading ? (
+              <SyncLoader color="#4A90E2" size={4} />
+            ) : (
+              <span>Submit</span>
+            )}
           </Button>
         </DialogFooter>
       </Dialog>
     </>
-  );
+  )
 }

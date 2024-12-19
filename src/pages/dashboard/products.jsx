@@ -4,112 +4,126 @@ import {
   CardBody,
   Typography,
   Button
-} from "@material-tailwind/react";
-import { useEffect, useState } from "react";
-import Modal from "@/components/Modal";
-import { PencilIcon, TrashIcon } from "@heroicons/react/24/solid";
-import { useDispatch } from "react-redux";
-import { SyncLoader } from "react-spinners";
-import NoData from "@/components/NoData";
-import axios from "axios";
-import { GetProductService, PostProductService } from "@/services/api.service";
-import { setPopup } from "@/store/slice/dashboardSlice";
+} from '@material-tailwind/react'
+import { useEffect, useState } from 'react'
+import Modal from '@/components/Modal'
+import { PencilIcon, TrashIcon } from '@heroicons/react/24/solid'
+import { useDispatch } from 'react-redux'
+import { SyncLoader } from 'react-spinners'
+import NoData from '@/components/NoData'
+import axios from 'axios'
+import { GetProductService, PostProductService } from '@/services/api.service'
+import { setPopup } from '@/store/slice/dashboardSlice'
 
 export function Products() {
-  const [isFormVisible, setIsFormVisible] = useState(false);
+  const [isFormVisible, setIsFormVisible] = useState(false)
   const [productData, setProductData] = useState({
-    name: "",
-    description: "",
-    price: "",
+    name: '',
+    description: '',
+    price: '',
     sizes: [],
     colors: [],
-    fabric: "",
-    category: "",
+    fabric: '',
+    category: '',
     images: [],
-    ratings: ""
-  });
-  const [isLoading, setLoading] = useState(false);
-  const [products, setProducts] = useState([]);
-  const dispatch = useDispatch();
-
-
-
+    ratings: ''
+  })
+  const [isLoading, setLoading] = useState(false)
+  const [products, setProducts] = useState([])
+  const dispatch = useDispatch()
 
   const fetchProducts = async () => {
     setLoading(true)
-    await GetProductService().then((res) => {
-      setProducts(res?.data?.data)
-      setLoading(false)
-    }).catch((err) => {
-      console.log(err);
-      setLoading(false)
-    })
+    await GetProductService()
+      .then((res) => {
+        setProducts(res?.data?.data)
+        setLoading(false)
+      })
+      .catch((err) => {
+        console.log(err)
+        setLoading(false)
+      })
   }
 
   const handleFileChange = (e) => {
-    setProductData({ ...productData, images: Array.from(e.target.files) });
-  };
+    setProductData({ ...productData, images: Array.from(e.target.files) })
+  }
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target
 
-    if (name === "sizes" || name === "colors") {
-      setProductData({ ...productData, [name]: value.split(",").map((item) => item.trim()) });
+    if (name === 'sizes' || name === 'colors') {
+      setProductData({
+        ...productData,
+        [name]: value.split(',').map((item) => item.trim())
+      })
     } else {
-      setProductData({ ...productData, [name]: value });
+      setProductData({ ...productData, [name]: value })
     }
-  };
+  }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    const formData = new FormData();
+    e.preventDefault()
+    const formData = new FormData()
 
     Object.keys(productData).forEach((key) => {
-      if (key === "images") {
-        productData.images.forEach((file) => formData.append("images", file));
-      } else if (key === "sizes" || key === "colors") {
-        formData.append(key, JSON.stringify(productData[key])); // Ensure arrays are stringified for correct server processing
+      if (key === 'images') {
+        productData.images.forEach((file) => formData.append('images', file))
+      } else if (key === 'sizes' || key === 'colors') {
+        formData.append(key, JSON.stringify(productData[key])) // Ensure arrays are stringified for correct server processing
       } else {
-        formData.append(key, productData[key]);
+        formData.append(key, productData[key])
       }
-    });
+    })
 
     try {
-      setLoading(true);
+      setLoading(true)
       await PostProductService(formData)
         .then((res) => {
-          console.log(res);
-          dispatch(setPopup({ message: "Product created successfully", type: "success" }))
+          console.log(res)
+          dispatch(
+            setPopup({
+              message: 'Product created successfully',
+              type: 'success'
+            })
+          )
           fetchProducts()
           setIsFormVisible(false)
-          setLoading(false);
+          setLoading(false)
         })
         .catch((err) => {
-          console.log(err);
-        dispatch(setPopup({ message: "Failed to create Product, Please try again ", type: "error" }))
-
-        });
-      setLoading(false);
+          console.log(err)
+          dispatch(
+            setPopup({
+              message: 'Failed to create Product, Please try again ',
+              type: 'error'
+            })
+          )
+        })
+      setLoading(false)
     } catch (error) {
-      console.error("Error uploading product:", error);
-      dispatch(setPopup({ message: "Failed to create Product, Please try again ", type: "error" }))
-      setLoading(false);
+      console.error('Error uploading product:', error)
+      dispatch(
+        setPopup({
+          message: 'Failed to create Product, Please try again ',
+          type: 'error'
+        })
+      )
+      setLoading(false)
     }
-  };
-
+  }
 
   useEffect(() => {
     fetchProducts()
   }, [])
 
-
   const showForm = () => {
-    setIsFormVisible(true);
-  };
+    setIsFormVisible(true)
+  }
 
   const closeForm = () => {
-    setIsFormVisible(false);
-  };
+    setIsFormVisible(false)
+  }
 
   return (
     <div className="mt-12 mb-8 flex flex-col gap-12">
@@ -142,15 +156,15 @@ export function Products() {
               <thead>
                 <tr>
                   {[
-                    "Name",
-                    "Description",
-                    "Price",
-                    "Sizes",
-                    "Colors",
-                    "Fabric",
-                    "Category",
-                    "Ratings",
-                    "Actions"
+                    'Name',
+                    'Description',
+                    'Price',
+                    'Sizes',
+                    'Colors',
+                    'Fabric',
+                    'Category',
+                    'Ratings',
+                    'Actions'
                   ].map((el) => (
                     <th
                       key={el}
@@ -168,15 +182,39 @@ export function Products() {
               </thead>
               <tbody>
                 {products.map((product, key) => (
-                  <tr key={product._id} className="border-b border-blue-gray-50">
-                    <td className="py-3 px-5 text-xs font-bold text-black">{product.name}</td>
-                    <td className="py-3 px-5 text-xs font-medium text-blue-gray-600" title={product.description}>{product.description.length > 10 ? `${product.description.slice(0, 19)}...` : product.description}</td>
-                    <td className="py-3 px-5 text-xs font-medium text-blue-gray-600">${product.price}</td>
-                    <td className="py-3 px-5 text-xs font-medium text-blue-gray-600">{product.sizes.join(", ")}</td>
-                    <td className="py-3 px-5 text-xs font-medium text-blue-gray-600">{product.colors.join(", ")}</td>
-                    <td className="py-3 px-5 text-xs font-medium text-blue-gray-600">{product.fabric}</td>
-                    <td className="py-3 px-5 text-xs font-medium text-blue-gray-600">{product.category}</td>
-                    <td className="py-3 px-5 text-xs font-medium text-blue-gray-600">{product.ratings}</td>
+                  <tr
+                    key={product._id}
+                    className="border-b border-blue-gray-50"
+                  >
+                    <td className="py-3 px-5 text-xs font-bold text-black">
+                      {product.name}
+                    </td>
+                    <td
+                      className="py-3 px-5 text-xs font-medium text-blue-gray-600"
+                      title={product.description}
+                    >
+                      {product.description.length > 10
+                        ? `${product.description.slice(0, 19)}...`
+                        : product.description}
+                    </td>
+                    <td className="py-3 px-5 text-xs font-medium text-blue-gray-600">
+                      ${product.price}
+                    </td>
+                    <td className="py-3 px-5 text-xs font-medium text-blue-gray-600">
+                      {product.sizes.join(', ')}
+                    </td>
+                    <td className="py-3 px-5 text-xs font-medium text-blue-gray-600">
+                      {product.colors.join(', ')}
+                    </td>
+                    <td className="py-3 px-5 text-xs font-medium text-blue-gray-600">
+                      {product.fabric}
+                    </td>
+                    <td className="py-3 px-5 text-xs font-medium text-blue-gray-600">
+                      {product.category}
+                    </td>
+                    <td className="py-3 px-5 text-xs font-medium text-blue-gray-600">
+                      {product.ratings}
+                    </td>
                     <td className="py-3 px-5 text-xs font-medium text-blue-gray-600">
                       <div className="flex items-center gap-2">
                         <PencilIcon className="h-4 w-4 text-gray-600 cursor-pointer" />
@@ -192,10 +230,17 @@ export function Products() {
       </Card>
 
       {isFormVisible && (
-        <Modal title="Add Product" closeForm={closeForm} isFormVisible={isFormVisible}>
+        <Modal
+          title="Add Product"
+          closeForm={closeForm}
+          isFormVisible={isFormVisible}
+        >
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Product Name
               </label>
               <input
@@ -209,7 +254,10 @@ export function Products() {
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="description" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="description"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Description
               </label>
               <textarea
@@ -222,7 +270,10 @@ export function Products() {
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="price" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="price"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Price
               </label>
               <input
@@ -236,33 +287,42 @@ export function Products() {
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="sizes" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="sizes"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Sizes (comma-separated)
               </label>
               <input
                 type="text"
                 name="sizes"
                 id="sizes"
-                value={productData.sizes.join(", ")}
+                value={productData.sizes.join(', ')}
                 onChange={handleChange}
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="colors" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="colors"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Colors (comma-separated)
               </label>
               <input
                 type="text"
                 name="colors"
                 id="colors"
-                value={productData.colors.join(", ")}
+                value={productData.colors.join(', ')}
                 onChange={handleChange}
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="fabric" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="fabric"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Fabric
               </label>
               <input
@@ -276,7 +336,10 @@ export function Products() {
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="category" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="category"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Category
               </label>
               <select
@@ -293,7 +356,10 @@ export function Products() {
               </select>
             </div>
             <div className="mb-4">
-              <label htmlFor="ratings" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="ratings"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Ratings (out of 5)
               </label>
               <input
@@ -310,7 +376,10 @@ export function Products() {
               />
             </div>
             <div className="mb-4">
-              <label htmlFor="images" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="images"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Product Images
               </label>
               <input
@@ -334,5 +403,5 @@ export function Products() {
         </Modal>
       )}
     </div>
-  );
+  )
 }

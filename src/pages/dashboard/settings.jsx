@@ -1,12 +1,30 @@
-import { Card, CardBody, CardHeader, CardFooter, Avatar, Typography, Tabs, TabsHeader, Tab, Switch, Tooltip, Button, } from "@material-tailwind/react";
-import { HomeIcon, ChatBubbleLeftEllipsisIcon, Cog6ToothIcon, PencilIcon, } from "@heroicons/react/24/solid";
-import { Link } from "react-router-dom";
-import { ProfileInfoCard, MessageCard } from "@/widgets/cards";
-import { platformSettingsData, conversationsData, projectsData } from "@/data";
-import { useSelector } from "react-redux";
+import {
+  Card,
+  CardBody,
+  CardHeader,
+  CardFooter,
+  Avatar,
+  Typography,
+  Tabs,
+  TabsHeader,
+  Tab,
+  Switch,
+  Tooltip,
+  Button
+} from '@material-tailwind/react'
+import {
+  HomeIcon,
+  ChatBubbleLeftEllipsisIcon,
+  Cog6ToothIcon,
+  PencilIcon
+} from '@heroicons/react/24/solid'
+import { Link } from 'react-router-dom'
+import { ProfileInfoCard, MessageCard } from '@/widgets/cards'
+import { platformSettingsData, conversationsData, projectsData } from '@/data'
+import { useSelector } from 'react-redux'
 
 export function Settings() {
-  const { profile , username} = useSelector((state) => state.user.data)
+  const { profile, username } = useSelector((state) => state.user.data)
   return (
     <>
       <div className="relative mt-8 h-72 w-full overflow-hidden rounded-xl bg-[url('/img/background-image.png')] bg-cover	bg-center">
@@ -25,7 +43,7 @@ export function Settings() {
               />
               <div>
                 <Typography variant="h5" color="blue-gray" className="mb-1">
-               {username}
+                  {username}
                 </Typography>
                 <Typography
                   variant="small"
@@ -73,7 +91,7 @@ export function Settings() {
                           label={label}
                           defaultChecked={checked}
                           labelProps={{
-                            className: "text-sm font-normal text-blue-gray-500",
+                            className: 'text-sm font-normal text-blue-gray-500'
                           }}
                         />
                       ))}
@@ -86,17 +104,17 @@ export function Settings() {
               title="Profile Information"
               description="Hi, I'm Alec Thompson, Decisions: If you can't decide, the answer is no. If two equally difficult paths, choose the one more painful in the short term (pain avoidance is creating an illusion of equality)."
               details={{
-                "first name": `${username}`,
-                mobile: "(44) 123 1234 123",
-                email: "alecthompson@mail.com",
-                location: "USA",
+                'first name': `${username}`,
+                mobile: '(44) 123 1234 123',
+                email: 'alecthompson@mail.com',
+                location: 'USA',
                 social: (
                   <div className="flex items-center gap-4">
                     <i className="fa-brands fa-facebook text-blue-700" />
                     <i className="fa-brands fa-twitter text-blue-400" />
                     <i className="fa-brands fa-instagram text-purple-500" />
                   </div>
-                ),
+                )
               }}
               action={
                 <Tooltip content="Edit Profile">
@@ -183,8 +201,9 @@ export function Settings() {
                               alt={name}
                               size="xs"
                               variant="circular"
-                              className={`cursor-pointer border-2 border-white ${key === 0 ? "" : "-ml-2.5"
-                                }`}
+                              className={`cursor-pointer border-2 border-white ${
+                                key === 0 ? '' : '-ml-2.5'
+                              }`}
                             />
                           </Tooltip>
                         ))}
@@ -198,7 +217,7 @@ export function Settings() {
         </CardBody>
       </Card>
     </>
-  );
+  )
 }
 
-export default Settings;
+export default Settings

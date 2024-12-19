@@ -1,7 +1,6 @@
 // import IndividualProfile from "@/components/individualProfile";
 // import { Routes, Route } from "react-router-dom";
 
-
 // // import routes from "@/routes";
 // const icon = {
 //     className: "w-5 h-5 text-inherit",
@@ -35,7 +34,5 @@
 //         </div>
 //     );
 // }
-
-
 
 // export default Routes;

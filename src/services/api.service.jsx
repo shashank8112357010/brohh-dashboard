@@ -1,187 +1,142 @@
-
-import apiAdmin from "./interceptor"; // Adjust the path based on your file structure
-
-
+import apiAdmin from './interceptor' // Adjust the path based on your file structure
 
 // Login User API
 export const AdminLoginService = (data) => {
-    return apiAdmin.post("/users/auth/login", data);
-};
+  return apiAdmin.post('/users/auth/login', data)
+}
 
-
-// products => 
+// products =>
 
 export const PostProductService = (data) => {
-    return apiAdmin.post("/products", data, {
-        headers: {
-            "Content-Type": "multipart/form-data", // This is optional as Axios will set it automatically
-        }
-    });
-};
+  return apiAdmin.post('/products', data, {
+    headers: {
+      'Content-Type': 'multipart/form-data' // This is optional as Axios will set it automatically
+    }
+  })
+}
 
 export const GetProductService = () => {
-    return apiAdmin.get("/products");
-};
-
+  return apiAdmin.get('/products')
+}
 
 export const FetchProductIdsService = () => {
-    return apiAdmin.get("/products/ids");
-};
+  return apiAdmin.get('/products/ids')
+}
 
-
-
-// influencers ======> 
-
-
+// influencers ======>
 
 export const GetInfluencerService = () => {
-    return apiAdmin.get("/influencers");
-};
+  return apiAdmin.get('/influencers')
+}
 
 export const GetIndividualInfluencerService = (influencerId) => {
-    return apiAdmin.get(`/influencers/${influencerId}`);
-};
-
+  return apiAdmin.get(`/influencers/${influencerId}`)
+}
 
 export const PostInfluencerService = (data) => {
-    return apiAdmin.post("/influencers", data, {
-        headers: {
-            "Content-Type": "multipart/form-data", // This is optional as Axios will set it automatically
-        }
-    });
-};
+  return apiAdmin.post('/influencers', data, {
+    headers: {
+      'Content-Type': 'multipart/form-data' // This is optional as Axios will set it automatically
+    }
+  })
+}
 
 // orders =====
 
-
-
 export const GetOrdersService = () => {
-    return apiAdmin.get("/orders");
-};
-
+  return apiAdmin.get('/orders')
+}
 
 export const MarkStatusDoneOrdersService = (orderId) => {
-    return apiAdmin.put(`/orders/status/${orderId}`);
-};
+  return apiAdmin.put(`/orders/status/${orderId}`)
+}
 
-
-// review => 
-
+// review =>
 
 export const GetReviewService = () => {
-    return apiAdmin.get("/reviews/pending");
-};
-
-
+  return apiAdmin.get('/reviews/pending')
+}
 
 export const PublishReviewService = (reviewId) => {
-    return apiAdmin.patch(`/reviews/${reviewId}`);
-};
+  return apiAdmin.patch(`/reviews/${reviewId}`)
+}
 
-// help => 
-
-
+// help =>
 
 export const GetHelpService = () => {
-    return apiAdmin.get("/help");
-};
-
+  return apiAdmin.get('/help')
+}
 
 export const MarkStatusDoneHelpService = (helpId) => {
-    return apiAdmin.put(`/help/status/${helpId}`);
-};
+  return apiAdmin.put(`/help/status/${helpId}`)
+}
 
-
-//styles 
+//styles
 
 export const PostStyleService = (data) => {
-    return apiAdmin.post("/styles", data, {
-        headers: {
-            "Content-Type": "multipart/form-data", // This is optional as Axios will set it automatically
-        }
-    });
-};
+  return apiAdmin.post('/styles', data, {
+    headers: {
+      'Content-Type': 'multipart/form-data' // This is optional as Axios will set it automatically
+    }
+  })
+}
 
 export const GetStyleService = () => {
-    return apiAdmin.get("/styles");
-};
-
+  return apiAdmin.get('/styles')
+}
 
 export const DeleteStyleService = (styleId) => {
-    return apiAdmin.delete(`/style/${styleId}`);
-};
-
+  return apiAdmin.delete(`/style/${styleId}`)
+}
 
 export const EditStyleService = (data, styleId) => {
-    return apiAdmin.post(`/style/${styleId}`, data, {
-        headers: {
-            "Content-Type": "multipart/form-data", // This is optional as Axios will set it automatically
-        }
-    });
-};
+  return apiAdmin.post(`/style/${styleId}`, data, {
+    headers: {
+      'Content-Type': 'multipart/form-data' // This is optional as Axios will set it automatically
+    }
+  })
+}
 
-
-// testimonial 
+// testimonial
 
 export const GetTestimonialService = () => {
-    return apiAdmin.get("/testimonials");
-};
+  return apiAdmin.get('/testimonials')
+}
 
 export const PostTestimonialService = (data) => {
-    return apiAdmin.post("/testimonials", data);
-};
+  return apiAdmin.post('/testimonials', data)
+}
 
 export const DeleteTestimonialService = () => {
-    return apiAdmin.delete("/testimonials");
-};
+  return apiAdmin.delete('/testimonials')
+}
 
-
-// blogs => 
-
+// blogs =>
 
 export const PostBlogsService = (data) => {
-    return apiAdmin.post("/blogs", data, {
-        headers: {
-            "Content-Type": "multipart/form-data", // This is optional as Axios will set it automatically
-        }
-    });
-};
-
+  return apiAdmin.post('/blogs', data, {
+    headers: {
+      'Content-Type': 'multipart/form-data' // This is optional as Axios will set it automatically
+    }
+  })
+}
 
 export const GetBlogsService = () => {
-    return apiAdmin.get("/blogs");
-};
+  return apiAdmin.get('/blogs')
+}
 
-// combinations 
+// combinations
 
 export const PostCombinationService = (data) => {
-    return apiAdmin.post("/combinations", data);
-};
-
+  return apiAdmin.post('/combinations', data)
+}
 
 export const getIndividualCombinationService = (baseProductId) => {
-    return apiAdmin.post(`/combinations/${baseProductId}`);
-};
+  return apiAdmin.post(`/combinations/${baseProductId}`)
+}
 
-
-
-// dashboard 
+// dashboard
 
 export const GetDashboardCountService = () => {
-    return apiAdmin.get("/dashboard/count");
-};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  return apiAdmin.get('/dashboard/count')
+}

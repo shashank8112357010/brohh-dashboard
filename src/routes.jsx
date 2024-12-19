@@ -10,7 +10,7 @@ import {
   PuzzlePieceIcon,
   StarIcon,
   CogIcon
-} from "@heroicons/react/24/solid";
+} from '@heroicons/react/24/solid'
 import {
   Home,
   Charges,
@@ -24,27 +24,67 @@ import {
   Style,
   Combination,
   Review
-} from "@/pages/dashboard";
+} from '@/pages/dashboard'
 
 const icon = {
-  className: "w-5 h-5 text-inherit",
-};
+  className: 'w-5 h-5 text-inherit'
+}
 // shashank
 export const routes = [
   {
-    layout: "dashboard",
+    layout: 'dashboard',
     pages: [
-      { icon: <HomeIcon {...icon} />, name: "home", path: "/home", element: <Home /> },
-      { icon: <ShoppingCartIcon {...icon} />, name: "Products", path: "/products", element: <Products /> },
-      { icon: <DocumentTextIcon {...icon} />, name: "Blogs", path: "/blog", element: <Blogs /> },
-      { icon: <ChatBubbleBottomCenterTextIcon {...icon} />, name: "Testimonial", path: "/testimonial", element: <Testimonial /> },
-      { icon: <ClipboardDocumentListIcon {...icon} />, name: "Order", path: "/order", element: <Order /> },
-      { icon: <QuestionMarkCircleIcon {...icon} />, name: "Help", path: "/help", element: <Help /> },
-      { icon: <PaintBrushIcon {...icon} />, name: "Style", path: "/style", element: <Style /> },
-      { icon: <UserGroupIcon {...icon} />, name: "Influencers", path: "/influencer", element: <Influencer /> },
+      {
+        icon: <HomeIcon {...icon} />,
+        name: 'home',
+        path: '/home',
+        element: <Home />
+      },
+      {
+        icon: <ShoppingCartIcon {...icon} />,
+        name: 'Products',
+        path: '/products',
+        element: <Products />
+      },
+      {
+        icon: <DocumentTextIcon {...icon} />,
+        name: 'Blogs',
+        path: '/blog',
+        element: <Blogs />
+      },
+      {
+        icon: <ChatBubbleBottomCenterTextIcon {...icon} />,
+        name: 'Testimonial',
+        path: '/testimonial',
+        element: <Testimonial />
+      },
+      {
+        icon: <ClipboardDocumentListIcon {...icon} />,
+        name: 'Order',
+        path: '/order',
+        element: <Order />
+      },
+      {
+        icon: <QuestionMarkCircleIcon {...icon} />,
+        name: 'Help',
+        path: '/help',
+        element: <Help />
+      },
+      {
+        icon: <PaintBrushIcon {...icon} />,
+        name: 'Style',
+        path: '/style',
+        element: <Style />
+      },
+      {
+        icon: <UserGroupIcon {...icon} />,
+        name: 'Influencers',
+        path: '/influencer',
+        element: <Influencer />
+      }
       // { icon: <StarIcon {...icon} />, name: "Review", path: "/review", element: <Review /> },
-    ],
-  },
-];
+    ]
+  }
+]
 
-export default routes;
+export default routes

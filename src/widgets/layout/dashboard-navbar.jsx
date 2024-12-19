@@ -1,40 +1,62 @@
-import { useLocation, Link } from "react-router-dom";
-import { Navbar, Typography, Button, IconButton, Breadcrumbs, Input, Menu, MenuHandler, MenuList, MenuItem, Avatar, } from "@material-tailwind/react";
-import { UserCircleIcon, Cog6ToothIcon, BellIcon, ClockIcon, CreditCardIcon, Bars3Icon, } from "@heroicons/react/24/solid";
-import { useMaterialTailwindController, setOpenConfigurator, setOpenSidenav, } from "@/context";
-import { useDispatch, useSelector } from "react-redux";
-import { setSearch } from "@/store/slice/headerSlice";
+import { useLocation, Link } from 'react-router-dom'
+import {
+  Navbar,
+  Typography,
+  Button,
+  IconButton,
+  Breadcrumbs,
+  Input,
+  Menu,
+  MenuHandler,
+  MenuList,
+  MenuItem,
+  Avatar
+} from '@material-tailwind/react'
+import {
+  UserCircleIcon,
+  Cog6ToothIcon,
+  BellIcon,
+  ClockIcon,
+  CreditCardIcon,
+  Bars3Icon
+} from '@heroicons/react/24/solid'
+import {
+  useMaterialTailwindController,
+  setOpenConfigurator,
+  setOpenSidenav
+} from '@/context'
+import { useDispatch, useSelector } from 'react-redux'
+import { setSearch } from '@/store/slice/headerSlice'
 
 export function DashboardNavbar() {
   const { url } = useSelector((state) => state.header)
-  const [controller, dispatch] = useMaterialTailwindController();
+  const [controller, dispatch] = useMaterialTailwindController()
   const dispatchh = useDispatch()
   const { search } = useSelector((state) => state.header)
 
-
   const { profile, username } = useSelector((state) => state.user.data)
 
-
-  
-  const { fixedNavbar, openSidenav } = controller;
-  const { pathname } = useLocation();
-  const [layout, page] = pathname.split("/").filter((el) => el !== "");
+  const { fixedNavbar, openSidenav } = controller
+  const { pathname } = useLocation()
+  const [layout, page] = pathname.split('/').filter((el) => el !== '')
 
   return (
     <Navbar
-      color={fixedNavbar ? "white" : "transparent"}
-      className={`rounded-xl transition-all ${fixedNavbar
-        ? "sticky top-4 z-40 py-3 shadow-md shadow-blue-gray-500/5"
-        : "px-0 py-1"
-        }`}
+      color={fixedNavbar ? 'white' : 'transparent'}
+      className={`rounded-xl transition-all ${
+        fixedNavbar
+          ? 'sticky top-4 z-40 py-3 shadow-md shadow-blue-gray-500/5'
+          : 'px-0 py-1'
+      }`}
       fullWidth
       blurred={fixedNavbar}
     >
       <div className="flex flex-col-reverse justify-between gap-6 md:flex-row md:items-center">
         <div className="capitalize">
           <Breadcrumbs
-            className={`bg-transparent p-0 transition-all ${fixedNavbar ? "mt-1" : ""
-              }`}
+            className={`bg-transparent p-0 transition-all ${
+              fixedNavbar ? 'mt-1' : ''
+            }`}
           >
             <Link to={`/${layout}`}>
               <Typography
@@ -80,33 +102,33 @@ export function DashboardNavbar() {
               color="blue-gray"
               className="hidden capitalize items-center gap-1 font-12 px-4 xl:flex"
             >
-              {
-                profile ?
-                  <Avatar className="h-6 w-6 mr-1" src={profile ? profile : "/img/team-2.jpeg"}
-                    alt={username} size="sm" variant="rounded" />
-                  :
-                  <UserCircleIcon className="h-5 w-5 text-blue-gray-500" />
-
-              }
-              <label className="capitalize">
-                {username && username}
-              </label>
+              {profile ? (
+                <Avatar
+                  className="h-6 w-6 mr-1"
+                  src={profile ? profile : '/img/team-2.jpeg'}
+                  alt={username}
+                  size="sm"
+                  variant="rounded"
+                />
+              ) : (
+                <UserCircleIcon className="h-5 w-5 text-blue-gray-500" />
+              )}
+              <label className="capitalize">{username && username}</label>
             </Button>
             <IconButton
               variant="text"
               color="blue-gray"
               className="grid xl:hidden"
             >
-              {
-                profile ?
-                  <img
-                    className="h-8 max-w-[32px] rounded-full object-cover object-center"
-                    src={profile}
-                    alt="nature image"
-                  /> :
-
-                  <UserCircleIcon className="h-5 w-5 text-blue-gray-500" />
-              }
+              {profile ? (
+                <img
+                  className="h-8 max-w-[32px] rounded-full object-cover object-center"
+                  src={profile}
+                  alt="nature image"
+                />
+              ) : (
+                <UserCircleIcon className="h-5 w-5 text-blue-gray-500" />
+              )}
             </IconButton>
           </Link>
           {/* <UserCircleIcon className="h-5 w-5 text-blue-gray-500" />
@@ -129,9 +151,9 @@ export function DashboardNavbar() {
         </div>
       </div>
     </Navbar>
-  );
+  )
 }
 
-DashboardNavbar.displayName = "/src/widgets/layout/dashboard-navbar.jsx";
+DashboardNavbar.displayName = '/src/widgets/layout/dashboard-navbar.jsx'
 
-export default DashboardNavbar;
+export default DashboardNavbar

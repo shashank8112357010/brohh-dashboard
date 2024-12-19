@@ -1,37 +1,37 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react'
 import {
   Card,
   CardHeader,
   CardBody,
   Typography,
   Avatar,
-  Button,
-} from "@material-tailwind/react";
-import { SyncLoader } from "react-spinners";
-import { TestimonialFormModal } from "./TestimonialFormModal";
-import { GetTestimonialService } from "@/services/api.service";
+  Button
+} from '@material-tailwind/react'
+import { SyncLoader } from 'react-spinners'
+import { TestimonialFormModal } from './TestimonialFormModal'
+import { GetTestimonialService } from '@/services/api.service'
 
 export function Testimonial() {
-  const [testimonials, setTestimonials] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [testimonials, setTestimonials] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
 
   const getTestimonial = async () => {
-    setIsLoading(true);
+    setIsLoading(true)
     await GetTestimonialService()
       .then((res) => {
-        setTestimonials(res.data.data || []);
+        setTestimonials(res.data.data || [])
       })
       .catch((err) => {
-        console.error("Failed to fetch testimonials:", err);
+        console.error('Failed to fetch testimonials:', err)
       })
       .finally(() => {
-        setIsLoading(false);
-      });
-  };
+        setIsLoading(false)
+      })
+  }
 
   useEffect(() => {
-    getTestimonial();
-  }, []);
+    getTestimonial()
+  }, [])
 
   return (
     <>
@@ -44,7 +44,7 @@ export function Testimonial() {
           </CardHeader>
 
           <div className="px-4 my-5 flex justify-end">
-            <TestimonialFormModal getTestimonial={getTestimonial}/>
+            <TestimonialFormModal getTestimonial={getTestimonial} />
           </div>
 
           <CardBody className="px-4 pt-0 pb-2">
@@ -60,7 +60,6 @@ export function Testimonial() {
                     className="border border-gray-200 rounded-lg p-4 shadow-md"
                   >
                     <div className="flex items-center gap-4 mb-3">
-                     
                       <Typography variant="h6" className="capitalize">
                         {testimonial.name}
                       </Typography>
@@ -89,7 +88,7 @@ export function Testimonial() {
         </Card>
       </div>
     </>
-  );
+  )
 }
 
-export default Testimonial;
+export default Testimonial
