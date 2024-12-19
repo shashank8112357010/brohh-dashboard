@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  base: 'https://brohh-dashboard.onrender.com/',
+  base: '/',
   resolve: {
     alias: [{ find: '@', replacement: '/src' }]
   }
