@@ -63,7 +63,7 @@ export function Blogs() {
               <table className="w-full min-w-[640px] table-auto">
                 <thead>
                   <tr>
-                    {['Title', 'Description', 'Posted On', 'Image'].map(
+                    {['Title','Image' , 'Description', 'Posted On' ].map(
                       (header) => (
                         <th
                           key={header}
@@ -101,6 +101,13 @@ export function Blogs() {
                             </Typography>
                           </td>
                           <td className={className}>
+                            <img
+                              src={image}
+                              alt={title}
+                              className="h-12 w-12 rounded-lg object-cover"
+                            />
+                          </td>
+                          <td className={className}>
                             <Typography
                               variant="small"
                               color="blue-gray"
@@ -118,13 +125,7 @@ export function Blogs() {
                               {new Date(postedOn).toLocaleDateString()}
                             </Typography>
                           </td>
-                          <td className={className}>
-                            <img
-                              src={image}
-                              alt={title}
-                              className="h-12 w-12 rounded-lg object-cover"
-                            />
-                          </td>
+                        
                         </tr>
                       )
                     }
