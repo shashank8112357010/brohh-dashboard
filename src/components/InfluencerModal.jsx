@@ -186,7 +186,7 @@ export function InfluencerModal({ fetchAllInfluencers }) {
                         className="flex items-center gap-2"
                       >
                         <img
-                          src={product.image}
+                          src={product?.images[0]}
                           alt={product.name}
                           className="w-8 h-8 object-cover"
                         />
