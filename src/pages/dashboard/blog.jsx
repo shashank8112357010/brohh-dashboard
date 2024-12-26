@@ -4,37 +4,64 @@ import {
   CardHeader,
   CardBody,
   Typography,
-  Chip
+  Chip,
+  IconButton,
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+  Button
 } from '@material-tailwind/react'
-import { GetBlogsService } from '@/services/api.service'
+import { GetBlogsService, DeleteBlogsService } from '@/services/api.service'
 import { SyncLoader } from 'react-spinners'
 import { BlogModal } from '@/components/BlogModal'
+import { TrashIcon } from '@heroicons/react/24/outline'
 
 export function Blogs() {
   const [blogs, setBlogs] = useState([])
-  const [error, setError] = useState('')
+
   const [loading, setLoading] = useState(true)
+  const [isDeleting , setDeleting] = useState(false)
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false)
+  const [selectedBlogId, setSelectedBlogId] = useState(null)
 
   // Function to fetch blogs
   const fetchBlogs = () => {
     setLoading(true) // Show loader during the fetch
     GetBlogsService()
       .then((res) => {
-        console.log(res)
         setBlogs(res.data?.data || []) // Assuming `res.data` contains the array of blogs
       })
       .catch((err) => {
         console.error('Error fetching blogs:', err)
-        setError('Failed to fetch blogs. Please try again later.')
+     
       })
       .finally(() => {
         setLoading(false) // Hide loader after the fetch
       })
   }
 
+  // Function to delete a blog
+  const deleteBlog = async() => {
+    setDeleting(true)
+    if (!selectedBlogId) return
+   await DeleteBlogsService(selectedBlogId)
+      .then(() => {
+        setDeleting(false)
+        setDeleteModalOpen(false) // Close the modal
+        setSelectedBlogId(null) // Reset selected blog
+        fetchBlogs() // Refresh the blog list
+      })
+      .catch((err) => {
+        setDeleting(false)
+      
+        setDeleteModalOpen(false) // Close the modal
+      })
+  }
+
   // Fetch blogs on component mount
   useEffect(() => {
-    fetchBlogs()
+    fetchBlogs();
   }, [])
 
   return (
@@ -55,15 +82,11 @@ export function Blogs() {
               <div className="flex justify-center items-center py-10">
                 <SyncLoader color="#000" size={15} />
               </div>
-            ) : error ? (
-              <Typography variant="small" color="red">
-                {error}
-              </Typography>
-            ) : blogs?.length > 0 ? (
+            )  : blogs?.length > 0 ? (
               <table className="w-full min-w-[640px] table-auto">
                 <thead>
                   <tr>
-                    {['Title', 'Image', 'Description', 'Posted On'].map(
+                    {['Title', 'Image', 'Description', 'Posted On', 'Actions'].map(
                       (header) => (
                         <th
                           key={header}
@@ -125,6 +148,17 @@ export function Blogs() {
                               {new Date(postedOn).toLocaleDateString()}
                             </Typography>
                           </td>
+                          <td className={className}>
+                            <IconButton
+                              color="red"
+                              onClick={() => {
+                                setSelectedBlogId(_id)
+                                setDeleteModalOpen(true)
+                              }}
+                            >
+                              <TrashIcon className="h-5 w-5" />
+                            </IconButton>
+                          </td>
                         </tr>
                       )
                     }
@@ -139,6 +173,42 @@ export function Blogs() {
           </CardBody>
         </Card>
       </div>
+
+      {/* Delete Confirmation Modal */}
+      <Dialog
+        open={deleteModalOpen}
+        handler={setDeleteModalOpen}
+        size="sm"
+        className="max-w-sm"
+      >
+        <DialogHeader>Confirm Deletion</DialogHeader>
+        <DialogBody divider>
+          Are you sure you want to delete this blog? This action cannot be
+          undone.
+        </DialogBody>
+        <DialogFooter>
+          <Button
+            variant="text"
+            color="blue-gray"
+            disabled={isDeleting}
+            onClick={() => setDeleteModalOpen(false)}
+            className="mr-2"
+          >
+            Cancel
+          </Button>
+          <Button
+            variant="gradient"
+            color="red"
+            disabled={isDeleting}
+            onClick={deleteBlog}
+          >
+            {
+              isDeleting ? <SyncLoader color="#fff" size={6} /> : "Confirm"
+            }
+           
+          </Button>
+        </DialogFooter>
+      </Dialog>
     </>
   )
 }

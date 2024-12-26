@@ -1,132 +1,188 @@
-import { EllipsisVerticalIcon } from '@heroicons/react/24/outline'
+import { useEffect, useState } from 'react';
+import { EllipsisVerticalIcon } from '@heroicons/react/24/outline';
 import {
   Card,
   CardHeader,
   CardBody,
   Typography,
   Avatar,
-  Chip,
   Tooltip,
-  Progress
-} from '@material-tailwind/react'
-import { authorsTableData, projectsTableData } from '@/data'
+  Button,
+  Dialog,
+  DialogHeader,
+  DialogBody,
+} from '@material-tailwind/react';
+import SyncLoader from 'react-spinners/SyncLoader';
+import { GetReviewService, PublishReviewService } from '@/services/api.service';
 
 export function Review() {
+  const [reviews, setReviews] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [publishing, setPublishing] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState('');
+
+  // Fetch reviews
+  const fetchReviews = async () => {
+    setLoading(true);
+    try {
+      const response = await GetReviewService();
+      console.log(response);
+      setReviews(response.data.data);
+    } catch (error) {
+      console.error('Failed to fetch reviews:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Publish a review
+  const handlePublish = async (reviewId) => {
+    setPublishing(true);
+    try {
+      await PublishReviewService(reviewId);
+      setReviews((prevReviews) =>
+        prevReviews.map((review) =>
+          review._id === reviewId ? { ...review, isPublished: true } : review
+        )
+      );
+    } catch (error) {
+      console.error('Failed to publish review:', error);
+    } finally {
+      setPublishing(false);
+    }
+  };
+
+  // Open modal with selected image
+  const openModal = (image) => {
+    setSelectedImage(image);
+    setModalOpen(true);
+  };
+
+  // Close modal
+  const closeModal = () => {
+    setModalOpen(false);
+    setSelectedImage('');
+  };
+
+  useEffect(() => {
+    fetchReviews();
+  }, []);
+
   return (
     <>
       <div className="mt-12 mb-8 flex flex-col gap-12">
         <Card>
           <CardHeader variant="gradient" color="gray" className="mb-8 p-6">
             <Typography variant="h6" color="white">
-              Review
+              Reviews
             </Typography>
           </CardHeader>
           <CardBody className="overflow-x-scroll px-0 pt-0 pb-2">
-            <table className="w-full min-w-[640px] table-auto">
-              <thead>
-                <tr>
-                  {['companies', 'members', 'budget', 'completion', ''].map(
-                    (el) => (
-                      <th
-                        key={el}
-                        className="border-b border-blue-gray-50 py-3 px-5 text-left"
-                      >
-                        <Typography
-                          variant="small"
-                          className="text-[11px] font-bold uppercase text-blue-gray-400"
+            {loading ? (
+              <div className="flex justify-center items-center py-8">
+                <SyncLoader color="black" size={15} />
+              </div>
+            ) : (
+              <table className="w-full min-w-[640px] table-auto">
+                <thead>
+                  <tr>
+                    {['Product', 'Rating', 'Message', 'Image', 'Actions'].map(
+                      (header) => (
+                        <th
+                          key={header}
+                          className="border-b border-blue-gray-50 py-3 px-5 text-left"
                         >
-                          {el}
-                        </Typography>
-                      </th>
-                    )
-                  )}
-                </tr>
-              </thead>
-              <tbody>
-                {projectsTableData.map(
-                  ({ img, name, members, budget, completion }, key) => {
-                    const className = `py-3 px-5 ${
-                      key === projectsTableData.length - 1
-                        ? ''
-                        : 'border-b border-blue-gray-50'
-                    }`
-
-                    return (
-                      <tr key={name}>
-                        <td className={className}>
-                          <div className="flex items-center gap-4">
-                            <Avatar src={img} alt={name} size="sm" />
-                            <Typography
-                              variant="small"
-                              color="blue-gray"
-                              className="font-bold"
-                            >
-                              {name}
-                            </Typography>
-                          </div>
-                        </td>
-                        <td className={className}>
-                          {members.map(({ img, name }, key) => (
-                            <Tooltip key={name} content={name}>
-                              <Avatar
-                                src={img}
-                                alt={name}
-                                size="xs"
-                                variant="circular"
-                                className={`cursor-pointer border-2 border-white ${
-                                  key === 0 ? '' : '-ml-2.5'
-                                }`}
-                              />
-                            </Tooltip>
-                          ))}
-                        </td>
-                        <td className={className}>
                           <Typography
                             variant="small"
-                            className="text-xs font-medium text-blue-gray-600"
+                            className="text-[11px] font-bold uppercase text-blue-gray-400"
                           >
-                            {budget}
+                            {header}
+                          </Typography>
+                        </th>
+                      )
+                    )}
+                  </tr>
+                </thead>
+                <tbody>
+                  {reviews?.map(
+                    ({ _id, product, rating, message, image, isPublished }) => (
+                      <tr key={_id}>
+                        <td className="border-b border-blue-gray-50 py-3 px-5">
+                          <Typography
+                            variant="small"
+                            className="font-medium text-blue-gray-600"
+                          >
+                            {product}
                           </Typography>
                         </td>
-                        <td className={className}>
-                          <div className="w-10/12">
+                        <td className="border-b border-blue-gray-50 py-3 px-5">
+                          <Typography
+                            variant="small"
+                            className="font-medium text-blue-gray-600"
+                          >
+                            {rating}
+                          </Typography>
+                        </td>
+                        <td className="border-b border-blue-gray-50 py-3 px-5">
+                          <Typography
+                            variant="small"
+                            className="font-medium text-blue-gray-600"
+                          >
+                            {message}
+                          </Typography>
+                        </td>
+                        <td className="border-b border-blue-gray-50 py-3 px-5">
+                          {image !== 'false' ? (
+                            <Avatar
+                              src={image}
+                              alt="Review Image"
+                              size="sm"
+                              className="cursor-pointer"
+                              onClick={() => openModal(image)}
+                            />
+                          ) : (
                             <Typography
                               variant="small"
-                              className="mb-1 block text-xs font-medium text-blue-gray-600"
+                              className="text-blue-gray-400"
                             >
-                              {completion}%
+                              No Image
                             </Typography>
-                            <Progress
-                              value={completion}
-                              variant="gradient"
-                              color={completion === 100 ? 'green' : 'gray'}
-                              className="h-1"
-                            />
-                          </div>
+                          )}
                         </td>
-                        <td className={className}>
-                          <Typography
-                            as="a"
-                            href="#"
-                            className="text-xs font-semibold text-blue-gray-600"
+                        <td className="border-b border-blue-gray-50 py-3 px-5">
+                          <Button
+                            size="sm"
+                            color="green"
+                            disabled={isPublished || publishing}
+                            onClick={() => handlePublish(_id)}
                           >
-                            <EllipsisVerticalIcon
-                              strokeWidth={2}
-                              className="h-5 w-5 text-inherit"
-                            />
-                          </Typography>
+                            {isPublished ? 'Published' : 'Publish'}
+                          </Button>
                         </td>
                       </tr>
                     )
-                  }
-                )}
-              </tbody>
-            </table>
+                  )}
+                </tbody>
+              </table>
+            )}
           </CardBody>
         </Card>
       </div>
+
+      {/* Material Tailwind Modal */}
+      <Dialog open={modalOpen} handler={closeModal}>
+        <DialogHeader>Image Preview</DialogHeader>
+        <DialogBody className="flex justify-center items-center">
+          <img
+            src={selectedImage}
+            alt="Selected Review"
+            className="max-w-full max-h-[80vh]"
+          />
+        </DialogBody>
+      </Dialog>
     </>
-  )
+  );
 }
 
-export default Review
+export default Review;

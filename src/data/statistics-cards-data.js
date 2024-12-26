@@ -10,7 +10,9 @@ import {
   ShoppingCartIcon,
   BookOpenIcon,
   ChatBubbleLeftEllipsisIcon,
-  UserGroupIcon // For Orders
+  UserGroupIcon, // For Orders
+  StarIcon,
+  FolderIcon
 } from '@heroicons/react/24/solid'
 
 export const statisticsCardsData = [
@@ -90,7 +92,29 @@ export const statisticsCardsData = [
       value: '',
       label: 'last updated ...'
     }
-  }
+  },
+  {
+    color: 'gray',
+    icon: FolderIcon, // You can change the icon for products if needed
+    title: 'Category',
+    value: '6', // This will be dynamically updated
+    footer: {
+      color: 'text-green-500',
+      value: '',
+      label: 'last updated ...'
+    }
+  },
+  {
+    color: 'gray',
+    icon: StarIcon, // You can change the icon for products if needed
+    title: 'Review',
+    value: '6', // This will be dynamically updated
+    footer: {
+      color: 'text-green-500',
+      value: '',
+      label: 'last updated ...'
+    }
+  },
 ]
 
 export default statisticsCardsData

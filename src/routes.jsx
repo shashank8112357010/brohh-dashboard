@@ -1,90 +1,111 @@
 import {
   HomeIcon,
+  Squares2X2Icon,
+  RectangleStackIcon,
   ShoppingCartIcon,
   DocumentTextIcon,
-  ChatBubbleBottomCenterTextIcon,
-  ClipboardDocumentListIcon,
+  ChatBubbleLeftRightIcon,
+  ClipboardDocumentCheckIcon,
   QuestionMarkCircleIcon,
-  PaintBrushIcon,
+  SparklesIcon,
   UserGroupIcon,
   PuzzlePieceIcon,
   StarIcon,
-  CogIcon
-} from '@heroicons/react/24/solid'
+} from '@heroicons/react/24/solid';
 import {
   Home,
   Charges,
   Order,
   Settings,
   Testimonial,
-  Products,
   Blogs,
   Help,
   Influencer,
   Style,
   Combination,
-  Review
-} from '@/pages/dashboard'
+  Review,
+  Category,
+  SubCategory,
+} from '@/pages/dashboard';
+import Products from './pages/dashboard/products';
 
 const icon = {
-  className: 'w-5 h-5 text-inherit'
-}
-// shashank
+  className: 'w-5 h-5 text-inherit',
+};
+
+// Updated icons for routes
 export const routes = [
   {
     layout: 'dashboard',
     pages: [
       {
         icon: <HomeIcon {...icon} />,
-        name: 'home',
+        name: 'Home',
         path: '/home',
-        element: <Home />
+        element: <Home />,
+      },
+      {
+        icon: <Squares2X2Icon {...icon} />,
+        name: 'Category',
+        path: '/category',
+        element: <Category />,
+      },
+      {
+        icon: <RectangleStackIcon {...icon} />,
+        name: 'Subcategory',
+        path: '/subcategory',
+        element: <SubCategory />,
       },
       {
         icon: <ShoppingCartIcon {...icon} />,
         name: 'Products',
         path: '/products',
-        element: <Products />
+        element: <Products />,
       },
       {
         icon: <DocumentTextIcon {...icon} />,
         name: 'Blogs',
         path: '/blog',
-        element: <Blogs />
+        element: <Blogs />,
       },
       {
-        icon: <ChatBubbleBottomCenterTextIcon {...icon} />,
+        icon: <ChatBubbleLeftRightIcon {...icon} />,
         name: 'Testimonial',
         path: '/testimonial',
-        element: <Testimonial />
+        element: <Testimonial />,
       },
       {
-        icon: <ClipboardDocumentListIcon {...icon} />,
+        icon: <ClipboardDocumentCheckIcon {...icon} />,
         name: 'Order',
         path: '/order',
-        element: <Order />
+        element: <Order />,
       },
       {
         icon: <QuestionMarkCircleIcon {...icon} />,
         name: 'Help',
         path: '/help',
-        element: <Help />
+        element: <Help />,
       },
       {
-        icon: <PaintBrushIcon {...icon} />,
+        icon: <SparklesIcon {...icon} />,
         name: 'Style',
         path: '/style',
-        element: <Style />
+        element: <Style />,
       },
       {
         icon: <UserGroupIcon {...icon} />,
         name: 'Influencers',
         path: '/influencer',
-        element: <Influencer />
-      }
-      // { icon: <StarIcon {...icon} />, name: "Review", path: "/review", element: <Review /> },
-    ]
-  }
-]
+        element: <Influencer />,
+      },
+      {
+        icon: <StarIcon {...icon} />,
+        name: 'Review',
+        path: '/review',
+        element: <Review />,
+      },
+    ],
+  },
+];
 
-export default routes
+export default routes;

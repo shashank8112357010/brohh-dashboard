@@ -4,7 +4,9 @@ import {
   CardBody,
   Typography,
   Button,
-  Chip
+  Chip,
+  Tooltip,
+  IconButton
 } from '@material-tailwind/react'
 import { useEffect, useState } from 'react'
 import {
@@ -15,6 +17,7 @@ import { SyncLoader } from 'react-spinners'
 import NoData from '@/components/NoData'
 import { setPopup } from '@/store/slice/dashboardSlice'
 import { useDispatch } from 'react-redux'
+import { CheckIcon, XCircleIcon } from '@heroicons/react/24/solid'
 
 export function Order() {
   const [orderData, setOrderData] = useState([])
@@ -141,17 +144,22 @@ export function Order() {
                           />
                         </td>
                         <td className="py-3 px-5">
-                          <button
-                            className={`text-[12px] py-1 px-1 text-white rounded ${
-                              order.status === 'pending'
-                                ? 'bg-green-800 hover:bg-green-700'
-                                : 'bg-gray-500 cursor-not-allowed'
-                            }`}
-                            disabled={order.status !== 'pending'}
-                            onClick={() => handleMarkDelivered(order.orderId)}
-                          >
-                            Mark Delivered
-                          </button>
+                          {order.status === 'pending' ? (
+                            <Tooltip content="Mark as Delivered">
+                              <IconButton
+                                color="green"
+                                onClick={() => handleMarkDelivered(order.orderId)}
+                              >
+                                <CheckIcon className="h-4 w-4" />
+                              </IconButton>
+                            </Tooltip>
+                          ) : (
+                            <Tooltip content="Already marked as delivered">
+                              <IconButton size='sm' color="blue-gray" disabled>
+                                <XCircleIcon className="h-6 w-6" />
+                              </IconButton>
+                            </Tooltip>
+                          )}
                         </td>
                       </tr>
                     ))}

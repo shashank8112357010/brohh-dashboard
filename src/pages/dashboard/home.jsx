@@ -13,7 +13,9 @@ import {
   BookOpenIcon,
   ChartBarIcon,
   ShieldCheckIcon,
-  HandThumbUpIcon
+  HandThumbUpIcon,
+  StarIcon,
+  FolderIcon
 } from '@heroicons/react/24/solid' // Import the necessary icons
 import SyncLoader from 'react-spinners/SyncLoader' // Import SyncLoader from react-spinners
 import { statisticsCardsData } from '@/data'
@@ -50,7 +52,8 @@ export function Home() {
           product,
           style,
           testimonial,
-          user
+          review,
+          category
         } = response.data?.data
 
         // Update the statistics data based on API response
@@ -118,6 +121,21 @@ export function Home() {
             lastUpdated: formatDate(blog.lastUpdated || 'N/A'),
             footer: { label: 'last updated', value: blog.lastUpdated || 'N/A' },
             icon: BookOpenIcon
+          }
+          ,
+          {
+            title: 'Category',
+            value: category.count,
+            lastUpdated: formatDate(category.lastUpdated || 'N/A'),
+            footer: { label: 'last updated', value: category.lastUpdated || 'N/A' },
+            icon: FolderIcon
+          },
+          {
+            title: 'Review',
+            value: review.count,
+            lastUpdated: formatDate(review.lastUpdated || 'N/A'),
+            footer: { label: 'last updated', value: review.lastUpdated || 'N/A' },
+            icon: StarIcon
           }
         ]
 

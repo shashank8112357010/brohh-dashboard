@@ -5,6 +5,45 @@ export const AdminLoginService = (data) => {
   return apiAdmin.post('/users/auth/login', data)
 }
 
+
+
+// category => 
+
+
+  export const GetCategoryService = () => {
+    return apiAdmin.get('/category')
+  }
+  export const DeleteCategoryService = (categoryId) => {
+    return apiAdmin.delete(`/category/${categoryId}`)
+  }
+  
+  export const PostCategoryService = (data) => {
+    return apiAdmin.post('/category', data)
+  }
+  
+  export const GetSubcategoriesServiceByCategoryId = (id) => {
+    console.log(id , "id");
+    return apiAdmin.get(`/category/${id}/subcategory`)
+  }
+  
+  
+  // sub category => 
+  
+  
+  export const GetSubCategoryService = () => {
+    return apiAdmin.get('/category/subcategory')
+  }
+  
+  export const PostSubCategoryService = (data) => {
+    return apiAdmin.post('/category/subcategory', data)
+  }
+  
+  export const DeleteSubCategoryService = (subCategoryId) => {
+    return apiAdmin.delete(`/category/subcategory/${subCategoryId}`)
+  }
+
+  
+
 // products =>
 
 export const PostProductService = (data) => {
@@ -18,6 +57,14 @@ export const PostProductService = (data) => {
 export const GetProductService = () => {
   return apiAdmin.get('/products')
 }
+export const UpdateProductService = () => {
+  return apiAdmin.get('/products')
+}
+
+export const DeleteProductService = (id) => {
+  return apiAdmin.delete(`/products/${id}`)
+}
+
 
 export const FetchProductIdsService = () => {
   return apiAdmin.get('/products/ids')
@@ -54,7 +101,7 @@ export const MarkStatusDoneOrdersService = (orderId) => {
 // review =>
 
 export const GetReviewService = () => {
-  return apiAdmin.get('/reviews/pending')
+  return apiAdmin.get('/reviews')
 }
 
 export const PublishReviewService = (reviewId) => {
@@ -69,6 +116,9 @@ export const GetHelpService = () => {
 
 export const MarkStatusDoneHelpService = (helpId) => {
   return apiAdmin.put(`/help/status/${helpId}`)
+}
+export const DeleteHelpService = (helpId) => {
+  return apiAdmin.delete(`/help/${helpId}`)
 }
 
 //styles
@@ -107,8 +157,8 @@ export const PostTestimonialService = (data) => {
   return apiAdmin.post('/testimonials', data)
 }
 
-export const DeleteTestimonialService = () => {
-  return apiAdmin.delete('/testimonials')
+export const DeleteTestimonialService = (testimonialId) => {
+  return apiAdmin.delete(`/testimonials/${testimonialId}`)
 }
 
 // blogs =>
@@ -124,6 +174,11 @@ export const PostBlogsService = (data) => {
 export const GetBlogsService = () => {
   return apiAdmin.get('/blogs')
 }
+
+export const DeleteBlogsService = (blogId) => {
+  return apiAdmin.delete(`/blogs/${blogId}`)
+}
+
 
 // combinations
 
