@@ -26,6 +26,8 @@ const Products = () => {
   const [openEdit, setOpenEdit] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [imageModalOpen, setImageModalOpen] = useState(false);
+  const [currentImages, setCurrentImages] = useState([]);
   const [newProduct, setNewProduct] = useState({
     name: "",
     description: "",
@@ -43,6 +45,41 @@ const Products = () => {
     fetchProducts();
     fetchCategories();
   }, []);
+
+  const openImageModal = (images) => {
+    setCurrentImages(images);
+    setImageModalOpen(true);
+  };
+    
+    
+
+    // Add this new effect to load subcategories when selected product changes
+    useEffect(() => {
+      if (selectedProduct && selectedProduct.category._id) {
+        fetchSubCategories(selectedProduct.category._id);
+      }
+    }, [selectedProduct]);
+  
+    const handleEditClick = (product) => {
+      setSelectedProduct(product);
+      setNewProduct({
+        name: product.name,
+        description: product.description,
+        ratings: product.ratings,
+        price: product.price,
+        sizes: product.sizes || [],
+        colors: product.colors || [],
+        fabric: product.fabric,
+        category: product.category._id,
+        subcategory: product.subcategory._id,
+        images: product.images || [],
+      });
+      setOpenEdit(true);
+      // Remove fetchSubCategories from here since it's now handled by the useEffect
+    };
+
+
+
 
   const fetchProducts = async () => {
     setIsLoading(true);
@@ -74,11 +111,9 @@ const Products = () => {
     }
   };
 
-
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
 
-    // Check if the number of files selected is exactly 3
     if (files.length !== 3) {
       dispatch({
         type: "SHOW_POPUP",
@@ -87,8 +122,7 @@ const Products = () => {
       return;
     }
 
-    // Validate file size and type
-    const validFiles = files.filter((file) => file.size <= 2 * 1024 * 1024); // Max 2MB size
+    const validFiles = files.filter((file) => file.size <= 2 * 1024 * 1024);
     if (validFiles.length !== files.length) {
       dispatch({
         type: "SHOW_POPUP",
@@ -107,7 +141,6 @@ const Products = () => {
       });
     }
 
-    // Create FormData to send product details
     const formData = new FormData();
     formData.append("name", newProduct.name);
     formData.append("description", newProduct.description);
@@ -119,11 +152,10 @@ const Products = () => {
     formData.append("sizes", newProduct.sizes.join(","));
     formData.append("colors", newProduct.colors.join(","));
 
-    // Append images to FormData
     newProduct.images.forEach((image, index) => formData.append(`images`, image));
 
     try {
-      await PostProductService(formData); // Make the API call with FormData
+      await PostProductService(formData);
       dispatch({ type: "SHOW_POPUP", payload: { type: "success", message: "Product created successfully!" } });
       fetchProducts();
       setOpenCreate(false);
@@ -136,7 +168,6 @@ const Products = () => {
   };
 
   const handleEdit = async () => {
-    // Create FormData to send updated product details
     const formData = new FormData();
     formData.append("name", newProduct.name);
     formData.append("description", newProduct.description);
@@ -148,7 +179,6 @@ const Products = () => {
     formData.append("sizes", newProduct.sizes.join(","));
     formData.append("colors", newProduct.colors.join(","));
 
-    // Append images to FormData
     if (newProduct.images.length > 0) {
       newProduct.images.forEach((image, index) => {
         formData.append(`images[${index}]`, image);
@@ -156,7 +186,7 @@ const Products = () => {
     }
 
     try {
-      await UpdateProductService(selectedProduct.id, formData); // Make the API call with FormData
+      await UpdateProductService(selectedProduct._id, formData);
       dispatch({ type: "SHOW_POPUP", payload: { type: "success", message: "Product updated successfully!" } });
       fetchProducts();
       setOpenEdit(false);
@@ -167,8 +197,6 @@ const Products = () => {
       });
     }
   };
-
-
 
   const handleDelete = async () => {
     try {
@@ -183,8 +211,6 @@ const Products = () => {
       });
     }
   };
-
-
 
   const resetForm = () => {
     setNewProduct({
@@ -202,22 +228,21 @@ const Products = () => {
   };
 
   const renderProducts = useMemo(() => {
-    console.log(products , "products");
     if (products.length === 0) return <NoData message="No products available" />;
 
     return (
       <table className="min-w-full table-auto ">
         <thead>
           <tr className="border-b border-blue-gray-50">
-            <th className="py-3 px-5 text-xs font-bold text-black">Name</th>
-            <th className="py-3 px-5 text-xs font-bold text-black">Description</th>
-            <th className="py-3 px-5 text-xs font-bold text-black">Price</th>
-            <th className="py-3 px-5 text-xs font-bold text-black">Ratings</th>
-            <th className="py-3 px-5 text-xs font-bold text-black">Fabric</th>
-            <th className="py-3 px-5 text-xs font-bold text-black">Category</th>
-            <th className="py-3 px-5 text-xs font-bold text-black">Subcategory</th>
-            <th className="py-3 px-5 text-xs font-bold text-black">Images</th>
-            <th className="py-3 px-5 text-xs font-bold text-black">Actions</th>
+            <th className="py-3 text-left px-5 text-xs font-bold text-black">Name</th>
+            <th className="py-3 text-left  px-5 text-xs font-bold text-black">Description</th>
+            <th className="py-3 text-left  px-5 text-xs font-bold text-black">Price</th>
+            <th className="py-3  text-left px-5 text-xs font-bold text-black">Ratings</th>
+            <th className="py-3  text-left px-5 text-xs font-bold text-black">Fabric</th>
+            <th className="py-3 text-left px-5 text-xs font-bold text-black">Category</th>
+            <th className="py-3  text-left px-5 text-xs font-bold text-black">Subcategory</th>
+            <th className="py-3 text-left  px-5 text-xs font-bold text-black">Images</th>
+            <th className="py-3  text-left px-5 text-xs font-bold text-black">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -230,7 +255,6 @@ const Products = () => {
               <td className="py-3 px-5 text-xs font-medium text-blue-gray-600">${product.price}</td>
               <td className="py-3 px-5 text-xs font-medium text-blue-gray-600">{product.ratings} / 5</td>
               <td className="py-3 px-5 text-xs font-medium text-blue-gray-600">{product.fabric} </td>
-
               <td className="py-3 px-5 text-xs font-medium text-blue-gray-600">{product.category.name}</td>
               <td className="py-3 px-5 text-xs font-medium text-blue-gray-600">{product.subcategory.name}</td>
               <td className="py-3 px-5 text-xs font-medium text-blue-gray-600">
@@ -245,13 +269,13 @@ const Products = () => {
                 <div className="flex items-center gap-2">
                   <PencilIcon
                     className="h-4 w-4 text-gray-600 cursor-pointer"
-                  // onClick={() => openEditModal(product)} // Open the edit modal when clicked
+                    onClick={() => handleEditClick(product)}
                   />
                   <TrashIcon
                     className="h-4 w-4 text-red-500 cursor-pointer"
                     onClick={() => {
-                      setSelectedProduct(product); // Set the product to delete
-                      setOpenDelete(true); // Open the delete modal
+                      setSelectedProduct(product);
+                      setOpenDelete(true);
                     }}
                   />
                 </div>
@@ -262,8 +286,6 @@ const Products = () => {
       </table>
     );
   }, [products]);
-
-
 
   return (
     <div className="p-6">
@@ -297,16 +319,15 @@ const Products = () => {
           <Input label="Price" value={newProduct.price} type="number" onChange={(e) => setNewProduct({ ...newProduct, price: e.target.value })} />
           <Input max={5} min={1} label="Ratings" value={newProduct.ratings} type="number" onChange={(e) => setNewProduct({ ...newProduct, ratings: e.target.value })} />
           <Input label="Fabric" value={newProduct.fabric} onChange={(e) => setNewProduct({ ...newProduct, fabric: e.target.value })} />
-          <Select label="Category" onChange={(e) => { setNewProduct({ ...newProduct, category: e }); fetchSubCategories(e); }}>
+          <Select label="Category" value={newProduct.category} onChange={(e) => { setNewProduct({ ...newProduct, category: e }); fetchSubCategories(e); }}>
             {categories.map((cat) => <Option key={cat._id} value={cat._id}>{cat.name}</Option>)}
           </Select>
-          <Select label="Subcategory" onChange={(e) => setNewProduct({ ...newProduct, subcategory: e })}>
+          <Select label="Subcategory" value={newProduct.subcategory} onChange={(e) => setNewProduct({ ...newProduct, subcategory: e })}>
             {subCategories.map((sub) => <Option key={sub._id} value={sub._id}>{sub.name}</Option>)}
           </Select>
-          <Input label="Sizes (comma-separated)" value={newProduct.sizes.join(", ")} onChange={(e) => setNewProduct({ ...newProduct, sizes: e.target.value.split(",") })} />
-          <Input label="Colors (comma-separated)" value={newProduct.colors.join(", ")} onChange={(e) => setNewProduct({ ...newProduct, colors: e.target.value.split(",") })} />
+          <Input label="Sizes (comma-separated)" value={newProduct.sizes.join(", ")} onChange={(e) => setNewProduct({ ...newProduct, sizes: e.target.value.split(",").map(s => s.trim()) })} />
+          <Input label="Colors (comma-separated)" value={newProduct.colors.join(", ")} onChange={(e) => setNewProduct({ ...newProduct, colors: e.target.value.split(",").map(s => s.trim()) })} />
           <Input
-
             type="file"
             multiple
             onChange={handleFileChange}
@@ -320,33 +341,63 @@ const Products = () => {
 
       {/* Edit Product Modal */}
       <Dialog open={openEdit} handler={() => setOpenEdit(false)} size="sm">
-        <div className="p-4">
+        <div className="p-4 flex flex-col gap-4">
           <Typography variant="h6">Edit Product</Typography>
           <Input label="Name" value={newProduct.name} onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })} />
           <Input label="Description" value={newProduct.description} onChange={(e) => setNewProduct({ ...newProduct, description: e.target.value })} />
           <Input label="Price" value={newProduct.price} type="number" onChange={(e) => setNewProduct({ ...newProduct, price: e.target.value })} />
-          <Input label="Ratings" value={newProduct.ratings} type="number" onChange={(e) => setNewProduct({ ...newProduct, ratings: e.target.value })} />
+          <Input max={5} min={1} label="Ratings" value={newProduct.ratings} type="number" onChange={(e) => setNewProduct({ ...newProduct, ratings: e.target.value })} />
           <Input label="Fabric" value={newProduct.fabric} onChange={(e) => setNewProduct({ ...newProduct, fabric: e.target.value })} />
-          <Select label="Category" onChange={(e) => { setNewProduct({ ...newProduct, category: e }); fetchSubCategories(e); }}>
+          <Select label="Category" value={newProduct.category} onChange={(e) => { setNewProduct({ ...newProduct, category: e }); fetchSubCategories(e); }}>
             {categories.map((cat) => <Option key={cat._id} value={cat._id}>{cat.name}</Option>)}
           </Select>
-          <Select label="Subcategory" onChange={(e) => setNewProduct({ ...newProduct, subcategory: e })}>
+          <Select label="Subcategory" value={newProduct.subcategory} onChange={(e) => setNewProduct({ ...newProduct, subcategory: e })}>
             {subCategories.map((sub) => <Option key={sub._id} value={sub._id}>{sub.name}</Option>)}
           </Select>
-          <Input label="Sizes (comma-separated)" value={newProduct.sizes.join(", ")} onChange={(e) => setNewProduct({ ...newProduct, sizes: e.target.value.split(",") })} />
-          <Input label="Colors (comma-separated)" value={newProduct.colors.join(", ")} onChange={(e) => setNewProduct({ ...newProduct, colors: e.target.value.split(",") })} />
-          <Input type="file" multiple onChange={handleFileChange} />
-          <Button onClick={handleEdit}>Update</Button>
+          <Input label="Sizes (comma-separated)" value={newProduct.sizes.join(", ")} onChange={(e) => setNewProduct({ ...newProduct, sizes: e.target.value.split(",").map(s => s.trim()) })} />
+          <Input label="Colors (comma-separated)" value={newProduct.colors.join(", ")} onChange={(e) => setNewProduct({ ...newProduct, colors: e.target.value.split(",").map(s => s.trim()) })} />
+          <Input
+            type="file"
+            multiple
+            onChange={handleFileChange}
+          />
+          <Typography variant="small" className="mt-2 text-gray-500">
+            Upload new images only if you want to replace the existing ones (exactly 3 images, each up to 2MB).
+          </Typography>
+          <div className="flex justify-end gap-2">
+            <Button color="gray" onClick={() => setOpenEdit(false)}>Cancel</Button>
+            <Button color="blue" onClick={handleEdit}>Update</Button>
+          </div>
         </div>
       </Dialog>
 
       {/* Delete Product Modal */}
-      <Dialog open={openDelete} handler={() => setOpenDelete(false)} size="xs">
-        <div className="p-4">
+      <Dialog open={openDelete} handler={() => setOpenDelete(false)} size="md">
+        <div className="p-6">
+          <Typography variant="h6" className="mb-4">Delete Product</Typography>
           <Typography>Are you sure you want to delete this product?</Typography>
-          <div className="flex justify-end space-x-2">
-            <Button onClick={() => setOpenDelete(false)}>Cancel</Button>
-            <Button color="red" onClick={handleDelete}>Delete</Button>
+          <div className="flex justify-end space-x-2 mt-4">
+            <Button color="gray" size="sm" onClick={() => setOpenDelete(false)}>Cancel</Button>
+            <Button color="red" size="sm" onClick={handleDelete}>Delete</Button>
+          </div>
+        </div>
+      </Dialog>
+
+      {/* Image Preview Modal */}
+      <Dialog open={imageModalOpen} handler={() => setImageModalOpen(false)} size="md">
+        <div className="p-4">
+          <Typography variant="h6" className="mb-4">
+            Product Images
+          </Typography>
+          <div className="grid grid-cols-3 gap-4">
+            {currentImages.map((image, index) => (
+              <img
+                key={index}
+                src={image}
+                alt={`Product Image ${index + 1}`}
+                className="h-40 w-full object-cover rounded"
+              />
+            ))}
           </div>
         </div>
       </Dialog>

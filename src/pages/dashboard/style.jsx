@@ -124,7 +124,7 @@ export function Style() {
                         <td className={className}>
                           <Typography
                             variant="small"
-                            className="text-xs text-blue-gray-600"
+                            className="text-xs font-medium text-blue-gray-600"
                           >
                             {influencerId.length
                               ? influencerId.join(', ')
