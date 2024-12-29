@@ -1,11 +1,12 @@
 import InfluencerModal from '@/components/InfluencerModal'
-import { GetInfluencerService } from '@/services/api.service'
+import { GetInfluencerService, DeleteInfluencerService } from '@/services/api.service'
 import {
   Card,
   CardHeader,
   CardBody,
   Typography,
-  Chip
+  Chip,
+  Button
 } from '@material-tailwind/react'
 import { useEffect, useState } from 'react'
 
@@ -14,7 +15,6 @@ export function Influencer() {
   const [loading, setLoading] = useState(true)
 
   // Fetch influencers data on component mount
-
   const fetchAllInfluencers = async () => {
     await GetInfluencerService()
       .then((res) => {
@@ -28,6 +28,19 @@ export function Influencer() {
         setLoading(false) // Stop loading spinner
       })
   }
+
+  // Function to delete influencer
+  const deleteInfluencer = async (id) => {
+    try {
+      await DeleteInfluencerService(id)
+      // After successful deletion, filter out the deleted influencer from the state
+      setInfluencers(influencers.filter(influencer => influencer._id !== id))
+    } catch (error) {
+      // Handle error here
+      console.log("Error deleting influencer:", error)
+    }
+  }
+
   useEffect(() => {
     fetchAllInfluencers()
   }, [])
@@ -52,7 +65,7 @@ export function Influencer() {
               <table className="w-full min-w-[640px] table-auto">
                 <thead>
                   <tr>
-                    {['name', 'instagramHandle', 'productIds', 'image'].map(
+                    {['name', 'instagramHandle', 'productIds', 'image', 'actions'].map(
                       (el) => (
                         <th
                           key={el}
@@ -75,11 +88,10 @@ export function Influencer() {
                       { _id, name, instagramHandle, image, productIds },
                       key
                     ) => {
-                      const className = `py-3 px-5 ${
-                        key === influencers.length - 1
+                      const className = `py-3 px-5 ${key === influencers.length - 1
                           ? ''
                           : 'border-b border-blue-gray-50'
-                      }`
+                        }`
 
                       return (
                         <tr key={_id}>
@@ -115,6 +127,15 @@ export function Influencer() {
                               alt={name}
                               className="h-16 w-16 rounded-full object-cover"
                             />
+                          </td>
+                          <td className={className}>
+                            {/* Delete Button */}
+                            <Button
+                              color="red"
+                              onClick={() => deleteInfluencer(_id)}
+                            >
+                              Delete
+                            </Button>
                           </td>
                         </tr>
                       )

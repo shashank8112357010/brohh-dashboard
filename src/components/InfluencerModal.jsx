@@ -37,6 +37,7 @@ export function InfluencerModal({ fetchAllInfluencers }) {
     setProductLoading(true)
     FetchProductIdsService()
       .then((res) => {
+        console.log("ids--------" ,res );
         setProductIds(res.data.data || [])
       })
       .catch((err) => {
@@ -170,19 +171,19 @@ export function InfluencerModal({ fetchAllInfluencers }) {
                 <div className="overflow-y-auto max-h-48 border border-gray-300 rounded-lg">
                   {productIds.map((product) => (
                     <div
-                      key={product.id}
+                      key={product?._id}
                       className="flex items-center gap-2 p-2 cursor-pointer hover:bg-gray-100"
                     >
                       <input
                         type="checkbox"
-                        id={`product-${product.id}`}
-                        value={product.id}
-                        checked={formData.productIds.includes(product.id)}
-                        onChange={() => handleProductSelection(product.id)}
+                        id={`product-${product?._id}`}
+                        value={product?._id}
+                        checked={formData.productIds.includes(product?._id)}
+                        onChange={() => handleProductSelection(product?._id)}
                         className="form-checkbox"
                       />
                       <label
-                        htmlFor={`product-${product.id}`}
+                        htmlFor={`product-${product?._id}`}
                         className="flex items-center gap-2"
                       >
                         <img

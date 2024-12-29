@@ -88,6 +88,10 @@ export const PostInfluencerService = (data) => {
   })
 }
 
+export const DeleteInfluencerService = (influencerId) => {
+  return apiAdmin.delete(`/influencers/${influencerId}`)
+}
+
 // orders =====
 
 export const GetOrdersService = () => {
@@ -136,11 +140,11 @@ export const GetStyleService = () => {
 }
 
 export const DeleteStyleService = (styleId) => {
-  return apiAdmin.delete(`/style/${styleId}`)
+  return apiAdmin.delete(`/styles/${styleId}`)
 }
 
 export const EditStyleService = (data, styleId) => {
-  return apiAdmin.post(`/style/${styleId}`, data, {
+  return apiAdmin.post(`/styles/${styleId}`, data, {
     headers: {
       'Content-Type': 'multipart/form-data' // This is optional as Axios will set it automatically
     }

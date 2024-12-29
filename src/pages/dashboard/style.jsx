@@ -2,13 +2,14 @@ import { useEffect, useState } from 'react'
 import {
   GetInfluencerService,
   GetStyleService,
-  PostStyleService
+  DeleteStyleService
 } from '@/services/api.service'
 import {
   Card,
   CardHeader,
   CardBody,
-  Typography
+  Typography,
+  Button
 } from '@material-tailwind/react'
 import { StyleFormModal } from '@/components/StyleFormModal'
 import { SyncLoader } from 'react-spinners'
@@ -18,6 +19,7 @@ export function Style() {
   const [influencers, setInfluencers] = useState([])
   const [styles, setStyles] = useState([])
 
+  // Fetch all styles from the API
   const fetchAllStyles = async () => {
     setLoading(true)
     await GetStyleService()
@@ -31,10 +33,10 @@ export function Style() {
       })
   }
 
+  // Fetch all influencers from the API
   const fetchAllInfluencers = async () => {
     await GetInfluencerService()
       .then((res) => {
-        console.log(res)
         setInfluencers(res.data.data || [])
       })
       .catch((err) => {
@@ -42,8 +44,22 @@ export function Style() {
       })
   }
 
+  // Handle style creation (refresh the styles list)
   const handleStyleCreated = () => {
-    fetchAllStyles() // Refresh the styles list after a new style is created
+    fetchAllStyles()
+  }
+
+  // Handle deleting a style
+  const handleDeleteStyle = async (styleId) => {
+    if (true) {
+      await DeleteStyleService(styleId)
+        .then((res) => {
+          fetchAllStyles()
+        })
+        .catch((err) => {
+          console.error('Error deleting style:', err)
+        })
+    }
   }
 
   useEffect(() => {
@@ -80,7 +96,7 @@ export function Style() {
               <table className="w-full min-w-[640px] table-auto min-h-[60vh]">
                 <thead>
                   <tr>
-                    {['name', 'image', 'influencers'].map((el) => (
+                    {['name', 'image', 'influencers', 'actions'].map((el) => (
                       <th
                         key={el}
                         className="border-b border-blue-gray-50 py-3 px-5 text-left"
@@ -130,6 +146,14 @@ export function Style() {
                               ? influencerId.join(', ')
                               : 'No Influencers'}
                           </Typography>
+                        </td>
+                        <td className={className}>
+                          <Button
+                            color="red"
+                            onClick={() => handleDeleteStyle(_id)}
+                          >
+                            Delete
+                          </Button>
                         </td>
                       </tr>
                     )
