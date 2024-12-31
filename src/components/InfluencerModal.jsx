@@ -34,10 +34,9 @@ export function InfluencerModal({ fetchAllInfluencers }) {
 
   // Fetch Product IDs with their name and image
   useEffect(() => {
-    setProductLoading(true)
+    setProductLoading(true);
     FetchProductIdsService()
       .then((res) => {
-        console.log("ids--------" ,res );
         setProductIds(res.data.data || [])
       })
       .catch((err) => {

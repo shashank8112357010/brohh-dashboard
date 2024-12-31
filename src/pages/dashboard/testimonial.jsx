@@ -79,7 +79,7 @@ export function Testimonial() {
               <table className="w-full min-w-[640px] table-auto">
                 <thead>
                   <tr>
-                    {['Name', 'Message', 'Date', 'Actions'].map((header) => (
+                    {['Name', 'Image', 'Message', 'Date', 'Actions'].map((header) => (
                       <th
                         key={header}
                         className="border-b border-blue-gray-50 py-3 px-5 text-left"
@@ -95,76 +95,85 @@ export function Testimonial() {
                   </tr>
                 </thead>
                 <tbody>
-                  {testimonials.map(({ _id, name, message, createdAt }, key) => {
+                  {testimonials.map(({ _id, name, image, message, createdAt }, key) => {
                     const className = `py-3 px-5 ${key === testimonials.length - 1
                       ? ''
                       : 'border-b border-blue-gray-50'
                       }`
+                  
 
-                    return (
-                      <tr key={_id}>
-                        <td className={className}>
-                          <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="font-bold"
-                          >
-                            {name}
-                          </Typography>
-                        </td>
-                        <td className={className}>
-                          <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="text-xs font-medium"
-                          >
-                            {message}
-                          </Typography>
-                        </td>
-                        <td className={className}>
-                          <Typography
-                            variant="small"
-                            color="blue-gray"
-                            className="text-xs font-medium"
-                          >
-                            {new Date(createdAt).toLocaleDateString()}
-                          </Typography>
-                        </td>
-                        <td className={className}>
+                return (
+                <tr key={_id}>
+                  <td className={className}>
+                    <Typography
+                      variant="small"
+                      color="blue-gray"
+                      className="font-bold"
+                    >
+                      {name}
+                    </Typography>
+                  </td>
+                  <td className={className}>
+                    <img
+                      src={image}
+                      alt={name}
+                      className="h-12 w-12 rounded-lg object-cover"
+                    />
+                  </td>
+
+                  <td className={className}>
+                    <Typography
+                      variant="small"
+                      color="blue-gray"
+                      className="text-xs font-medium"
+                    >
+                      {message}
+                    </Typography>
+                  </td>
+                  <td className={className}>
+                    <Typography
+                      variant="small"
+                      color="blue-gray"
+                      className="text-xs font-medium"
+                    >
+                      {new Date(createdAt).toLocaleDateString()}
+                    </Typography>
+                  </td>
+                  <td className={className}>
 
 
-                          <IconButton
-                            color="red"
-                            size="sm"
-                            onClick={() => {
-                              setSelectedTestimonialId(_id)
-                              setDeleteModalOpen(true)
-                            }}
-                          >
-                            <TrashIcon className="h-5 w-5" />
-                          </IconButton>
-                        </td>
-                      </tr>
-                    )
+                    <IconButton
+                      color="red"
+                      size="sm"
+                      onClick={() => {
+                        setSelectedTestimonialId(_id)
+                        setDeleteModalOpen(true)
+                      }}
+                    >
+                      <TrashIcon className="h-5 w-5" />
+                    </IconButton>
+                  </td>
+                </tr>
+                )
                   })}
-                </tbody>
+              </tbody>
               </table>
-            ) : (
-              <Typography variant="small" color="blue-gray" className="text-center py-5">
-                No testimonials found.
-              </Typography>
+          ) : (
+          <Typography variant="small" color="blue-gray" className="text-center py-5">
+            No testimonials found.
+          </Typography>
             )}
-          </CardBody>
-        </Card>
-      </div>
+        </CardBody>
+      </Card>
+    </div >
 
-      {/* Delete Confirmation Modal */}
-      <Dialog
-        open={deleteModalOpen}
-        handler={setDeleteModalOpen}
-        size="sm"
-        className="max-w-sm"
-      >
+      {/* Delete Confirmation Modal */ }
+      < Dialog
+  open = { deleteModalOpen }
+  handler = { setDeleteModalOpen }
+  size = "sm"
+  className = "max-w-sm"
+    >
         <DialogHeader>Confirm Deletion</DialogHeader>
         <DialogBody divider>
           Are you sure you want to delete this testimonial? This action cannot be undone.
@@ -188,7 +197,7 @@ export function Testimonial() {
             {isDeleting ? <SyncLoader color="#fff" size={6} /> : 'Confirm'}
           </Button>
         </DialogFooter>
-      </Dialog>
+      </Dialog >
     </>
   )
 }

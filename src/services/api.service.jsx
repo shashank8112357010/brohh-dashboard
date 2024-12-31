@@ -10,39 +10,39 @@ export const AdminLoginService = (data) => {
 // category => 
 
 
-  export const GetCategoryService = () => {
-    return apiAdmin.get('/category')
-  }
-  export const DeleteCategoryService = (categoryId) => {
-    return apiAdmin.delete(`/category/${categoryId}`)
-  }
-  
-  export const PostCategoryService = (data) => {
-    return apiAdmin.post('/category', data)
-  }
-  
-  export const GetSubcategoriesServiceByCategoryId = (id) => {
-    console.log(id , "id");
-    return apiAdmin.get(`/category/${id}/subcategory`)
-  }
-  
-  
-  // sub category => 
-  
-  
-  export const GetSubCategoryService = () => {
-    return apiAdmin.get('/category/subcategory')
-  }
-  
-  export const PostSubCategoryService = (data) => {
-    return apiAdmin.post('/category/subcategory', data)
-  }
-  
-  export const DeleteSubCategoryService = (subCategoryId) => {
-    return apiAdmin.delete(`/category/subcategory/${subCategoryId}`)
-  }
+export const GetCategoryService = () => {
+  return apiAdmin.get('/category')
+}
+export const DeleteCategoryService = (categoryId) => {
+  return apiAdmin.delete(`/category/${categoryId}`)
+}
 
-  
+export const PostCategoryService = (data) => {
+  return apiAdmin.post('/category', data)
+}
+
+export const GetSubcategoriesServiceByCategoryId = (id) => {
+  console.log(id, "id");
+  return apiAdmin.get(`/category/${id}/subcategory`)
+}
+
+
+// sub category => 
+
+
+export const GetSubCategoryService = () => {
+  return apiAdmin.get('/category/subcategory')
+}
+
+export const PostSubCategoryService = (data) => {
+  return apiAdmin.post('/category/subcategory', data)
+}
+
+export const DeleteSubCategoryService = (subCategoryId) => {
+  return apiAdmin.delete(`/category/subcategory/${subCategoryId}`)
+}
+
+
 
 // products =>
 
@@ -158,7 +158,11 @@ export const GetTestimonialService = () => {
 }
 
 export const PostTestimonialService = (data) => {
-  return apiAdmin.post('/testimonials', data)
+  return apiAdmin.post('/testimonials', data, {
+    headers: {
+      'Content-Type': 'multipart/form-data' // This is optional as Axios will set it automatically
+    }
+  })
 }
 
 export const DeleteTestimonialService = (testimonialId) => {

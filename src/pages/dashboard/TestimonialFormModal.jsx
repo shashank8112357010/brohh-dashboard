@@ -16,22 +16,38 @@ export function TestimonialFormModal({ getTestimonial }) {
   const [open, setOpen] = useState(false)
   const [name, setName] = useState('')
   const [message, setMessage] = useState('')
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
+  const [image , setImage] = useState('')
   const dispatch = useDispatch()
 
   const handleOpen = () => setOpen(!open)
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0]
+    if (file && file.size > 1024 * 1024) {
+      alert("size will be under 1 mb")
+    }
+   
+    setImage(file)
+  }
+
   const handleSubmit = () => {
     setLoading(true)
-    const data = { name, message }
+    const data = { name, message , image }
+    const dataToSend = new FormData()
 
-    PostTestimonialService(data)
+    dataToSend.append('name',data.name )
+    dataToSend.append('message', data.message)
+    dataToSend.append('image', data.image)
+
+    PostTestimonialService(dataToSend)
       .then(() => {
         // alert("Testimonial submitted successfully!"); // Replace with your success notification
         handleOpen()
         setName('')
         setMessage('')
-        getTestimonial()
+        getTestimonial();
+        setImage("")
         dispatch(
           setPopup({
             message: 'testimonial created successfully',
@@ -68,6 +84,12 @@ export function TestimonialFormModal({ getTestimonial }) {
             onChange={(e) => setName(e.target.value)}
             required
           />
+           <Input
+              type="file"
+              label="Upload Image"
+              onChange={handleFileChange}
+              required
+            />
           <textarea
             placeholder="Message"
             value={message}
