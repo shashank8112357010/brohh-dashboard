@@ -230,13 +230,13 @@ export const deleteBannerService = (bannerId) => {
 // contact 
 
 export const getContactService = () => {
-  return apiAdmin.get('/banner')
+  return apiAdmin.get('/contact')
 }
 export const PutContactService = (bannerId , data) => {
-  return apiAdmin.put(`/banner/${bannerId}` , data)
+  return apiAdmin.put(`/contact/${bannerId}` , data)
 }
 export const deleteContactService = (bannerId) => {
-  return apiAdmin.delete(`/banner/${bannerId}`)
+  return apiAdmin.delete(`/contact/${bannerId}`)
 }
 
 
