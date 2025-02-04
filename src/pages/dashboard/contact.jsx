@@ -27,7 +27,7 @@ export function Contact() {
     setLoading(true)
     getContactService()
       .then((res) => {
-        setContacts(res.data?.contacts || [])
+        setContacts(res.data || [])
       })
       .catch((err) => {
         console.error('Error fetching contacts:', err)
