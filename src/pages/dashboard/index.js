@@ -13,5 +13,7 @@ export * from '@/pages/dashboard/review'
 export * from '@/pages/dashboard/category'
 export * from '@/pages/dashboard/subcategory'
 export * from '@/pages/dashboard/banner'
+export * from '@/pages/dashboard/contact'
+
 
 

@@ -225,3 +225,18 @@ export const deleteBannerService = (bannerId) => {
   return apiAdmin.delete(`/banner/${bannerId}`)
 }
 
+
+
+// contact 
+
+export const getContactService = () => {
+  return apiAdmin.get('/banner')
+}
+export const PutContactService = (bannerId , data) => {
+  return apiAdmin.put(`/banner/${bannerId}` , data)
+}
+export const deleteContactService = (bannerId) => {
+  return apiAdmin.delete(`/banner/${bannerId}`)
+}
+
+
