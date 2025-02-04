@@ -11,6 +11,7 @@ export * from '@/pages/dashboard/style'
 export * from '@/pages/dashboard/combination'
 export * from '@/pages/dashboard/review'
 export * from '@/pages/dashboard/category'
-
 export * from '@/pages/dashboard/subcategory'
+export * from '@/pages/dashboard/banner'
+
 

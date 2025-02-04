@@ -203,3 +203,25 @@ export const getIndividualCombinationService = (baseProductId) => {
 export const GetDashboardCountService = () => {
   return apiAdmin.get('/dashboard/count')
 }
+
+
+// banner
+
+export const postBannerService = (data) => {
+  return apiAdmin.post(`/banner`  , data , {
+    headers: {
+      'Content-Type': 'multipart/form-data' // This is optional as Axios will set it automatically
+    }
+  })
+}
+
+
+
+export const getBannerService = () => {
+  return apiAdmin.get('/banner')
+}
+
+export const deleteBannerService = (bannerId) => {
+  return apiAdmin.delete(`/banner/${bannerId}`)
+}
+
