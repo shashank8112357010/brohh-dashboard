@@ -35,13 +35,21 @@ export function InfluencerModal({ fetchAllInfluencers }) {
   // Fetch Product IDs with their name and image
   useEffect(() => {
     setProductLoading(true);
+    console.log("here");
     FetchProductIdsService()
       .then((res) => {
         setProductIds(res.data.data || [])
       })
       .catch((err) => {
+        console.log("error");
         console.error('Error fetching product IDs:', err)
         setError('Failed to fetch product IDs.')
+        dispatch(
+          setPopup({
+            message: 'Failed to fetch product IDs',
+            type: 'error'
+          })
+        )
       })
       .finally(() => {
         setProductLoading(false)

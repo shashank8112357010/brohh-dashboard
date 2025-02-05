@@ -66,8 +66,11 @@ export const DeleteProductService = (id) => {
 }
 
 
+
+
 export const FetchProductIdsService = () => {
-  return apiAdmin.get('/products/ids')
+
+  return apiAdmin.get('/products/id')
 }
 
 // influencers ======>

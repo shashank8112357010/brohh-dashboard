@@ -13,7 +13,7 @@ import {
 import { useDispatch } from "react-redux";
 import SyncLoader from "react-spinners/SyncLoader";
 import NoData from "../../components/NoData";
-import { DeleteProductService, GetCategoryService, GetProductService, GetSubcategoriesServiceByCategoryId, PostCategoryService, PostProductService, UpdateProductService } from "@/services/api.service";
+import { DeleteProductService, GetCategoryService, GetProductService, GetSubcategoriesServiceByCategoryId, PostProductService, UpdateProductService } from "@/services/api.service";
 import { PencilIcon, TrashIcon } from "@heroicons/react/24/solid";
 
 const Products = () => {
@@ -40,6 +40,9 @@ const Products = () => {
     subcategory: "",
     images: [],
   });
+
+
+  const sizeOptions = ["S", "M", "L", "XL", "XXL", "32", "34", "36", "38", "40", "42", "46"];
 
   useEffect(() => {
     fetchProducts();
@@ -227,6 +230,10 @@ const Products = () => {
     });
   };
 
+  const handleMultiSelectChange = (value) => {
+    setNewProduct({ ...newProduct, sizes: value });
+  };
+
   const renderProducts = useMemo(() => {
     if (products.length === 0) return <NoData message="No products available" />;
 
@@ -325,7 +332,16 @@ const Products = () => {
           <Select label="Subcategory" value={newProduct.subcategory} onChange={(e) => setNewProduct({ ...newProduct, subcategory: e })}>
             {subCategories.map((sub) => <Option key={sub._id} value={sub._id}>{sub.name}</Option>)}
           </Select>
-          <Input label="Sizes (comma-separated)" value={newProduct.sizes.join(", ")} onChange={(e) => setNewProduct({ ...newProduct, sizes: e.target.value.split(",").map(s => s.trim()) })} />
+          <Select
+            label="Sizes"
+            multiple
+            value={newProduct.sizes}
+            onChange={handleMultiSelectChange}
+          >
+            {sizeOptions.map((size) => (
+              <Option key={size} value={size}>{size}</Option>
+            ))}
+          </Select>
           <Input label="Colors (comma-separated)" value={newProduct.colors.join(", ")} onChange={(e) => setNewProduct({ ...newProduct, colors: e.target.value.split(",").map(s => s.trim()) })} />
           <Input
             type="file"
@@ -354,7 +370,16 @@ const Products = () => {
           <Select label="Subcategory" value={newProduct.subcategory} onChange={(e) => setNewProduct({ ...newProduct, subcategory: e })}>
             {subCategories.map((sub) => <Option key={sub._id} value={sub._id}>{sub.name}</Option>)}
           </Select>
-          <Input label="Sizes (comma-separated)" value={newProduct.sizes.join(", ")} onChange={(e) => setNewProduct({ ...newProduct, sizes: e.target.value.split(",").map(s => s.trim()) })} />
+          <Select
+            label="Sizes"
+            multiple
+            value={newProduct.sizes}
+            onChange={handleMultiSelectChange}
+          >
+            {sizeOptions.map((size) => (
+              <Option key={size} value={size}>{size}</Option>
+            ))}
+          </Select>
           <Input label="Colors (comma-separated)" value={newProduct.colors.join(", ")} onChange={(e) => setNewProduct({ ...newProduct, colors: e.target.value.split(",").map(s => s.trim()) })} />
           <Input
             type="file"

@@ -1,5 +1,5 @@
 import InfluencerModal from '@/components/InfluencerModal'
-import { GetInfluencerService, DeleteInfluencerService } from '@/services/api.service'
+import { GetInfluencerService, DeleteInfluencerService, FetchProductIdsService } from '@/services/api.service'
 import {
   Card,
   CardHeader,
@@ -45,6 +45,8 @@ export function Influencer() {
     fetchAllInfluencers()
   }, [])
 
+
+
   return (
     <>
       <div className="mt-12 mb-8 flex flex-col gap-12">
@@ -55,7 +57,7 @@ export function Influencer() {
             </Typography>
           </CardHeader>
           <div className="px-4 flex justify-end">
-            <InfluencerModal fetchAllInfluencers={fetchAllInfluencers} />{' '}
+            <InfluencerModal fetchAllInfluencers={fetchAllInfluencers} />
             {/* Pass the function to Modal */}
           </div>
           <CardBody className="overflow-x-scroll px-0 pt-0 pb-2">
