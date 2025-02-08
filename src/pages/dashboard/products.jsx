@@ -9,12 +9,13 @@ import {
   Input,
   Select,
   Option,
+  Chip,
 } from "@material-tailwind/react";
 import { useDispatch } from "react-redux";
 import SyncLoader from "react-spinners/SyncLoader";
 import NoData from "../../components/NoData";
-import { DeleteProductService, GetCategoryService, GetProductService, GetSubcategoriesServiceByCategoryId, PostProductService, UpdateProductService } from "@/services/api.service";
-import { PencilIcon, TrashIcon } from "@heroicons/react/24/solid";
+import { DeleteProductService, GetCategoryService, GetProductService, GetSubcategoriesServiceByCategoryId, PostProductService, UpdateProductService, UpdateStockProductService } from "@/services/api.service";
+import { PencilIcon, TrashIcon, CheckCircleIcon, XCircleIcon } from "@heroicons/react/24/solid";
 
 const Products = () => {
   const dispatch = useDispatch();
@@ -39,6 +40,7 @@ const Products = () => {
     category: "",
     subcategory: "",
     images: [],
+    discount: null
   });
 
 
@@ -53,33 +55,33 @@ const Products = () => {
     setCurrentImages(images);
     setImageModalOpen(true);
   };
-    
-    
 
-    // Add this new effect to load subcategories when selected product changes
-    useEffect(() => {
-      if (selectedProduct && selectedProduct.category._id) {
-        fetchSubCategories(selectedProduct.category._id);
-      }
-    }, [selectedProduct]);
-  
-    const handleEditClick = (product) => {
-      setSelectedProduct(product);
-      setNewProduct({
-        name: product.name,
-        description: product.description,
-        ratings: product.ratings,
-        price: product.price,
-        sizes: product.sizes || [],
-        colors: product.colors || [],
-        fabric: product.fabric,
-        category: product.category._id,
-        subcategory: product.subcategory._id,
-        images: product.images || [],
-      });
-      setOpenEdit(true);
-      // Remove fetchSubCategories from here since it's now handled by the useEffect
-    };
+
+
+  // Add this new effect to load subcategories when selected product changes
+  useEffect(() => {
+    if (selectedProduct && selectedProduct.category._id) {
+      fetchSubCategories(selectedProduct.category._id);
+    }
+  }, [selectedProduct]);
+
+  const handleEditClick = (product) => {
+    setSelectedProduct(product);
+    setNewProduct({
+      name: product.name,
+      description: product.description,
+      ratings: product.ratings,
+      price: product.price,
+      sizes: product.sizes || [],
+      colors: product.colors || [],
+      fabric: product.fabric,
+      category: product.category._id,
+      subcategory: product.subcategory._id,
+      images: product.images || [],
+    });
+    setOpenEdit(true);
+    // Remove fetchSubCategories from here since it's now handled by the useEffect
+  };
 
 
 
@@ -147,6 +149,8 @@ const Products = () => {
     const formData = new FormData();
     formData.append("name", newProduct.name);
     formData.append("description", newProduct.description);
+    formData.append("discount", newProduct.discount);
+
     formData.append("price", newProduct.price);
     formData.append("ratings", newProduct.ratings);
     formData.append("fabric", newProduct.fabric);
@@ -231,7 +235,18 @@ const Products = () => {
   };
 
   const handleMultiSelectChange = (value) => {
-    setNewProduct({ ...newProduct, sizes: value });
+    setNewProduct((prevData) => ({
+      ...prevData,
+      sizes: [...prevData.sizes, value]
+    }))
+
+  };
+
+  const handleRemoveSize = (sizeToRemove) => {
+    setNewProduct((prevData) => ({
+      ...prevData,
+      sizes: prevData.sizes.filter(size => size !== sizeToRemove)
+    }));
   };
 
   const renderProducts = useMemo(() => {
@@ -243,11 +258,15 @@ const Products = () => {
           <tr className="border-b border-blue-gray-50">
             <th className="py-3 text-left px-5 text-xs font-bold text-black">Name</th>
             <th className="py-3 text-left  px-5 text-xs font-bold text-black">Description</th>
+            <th className="py-3 text-left  px-5 text-xs font-bold text-black">Discount</th>
+
             <th className="py-3 text-left  px-5 text-xs font-bold text-black">Price</th>
             <th className="py-3  text-left px-5 text-xs font-bold text-black">Ratings</th>
             <th className="py-3  text-left px-5 text-xs font-bold text-black">Fabric</th>
             <th className="py-3 text-left px-5 text-xs font-bold text-black">Category</th>
             <th className="py-3  text-left px-5 text-xs font-bold text-black">Subcategory</th>
+            <th className="py-3  text-left px-5 text-xs font-bold text-black">Stock</th>
+
             <th className="py-3 text-left  px-5 text-xs font-bold text-black">Images</th>
             <th className="py-3  text-left px-5 text-xs font-bold text-black">Actions</th>
           </tr>
@@ -257,13 +276,32 @@ const Products = () => {
             <tr key={product._id} className="border-b border-blue-gray-50">
               <td className="py-3 px-5 text-xs font-medium text-blue-gray-600">{product.name}</td>
               <td className="py-3 px-5 text-xs font-medium text-blue-gray-600" title={product.description}>
-                {product.description.length > 10 ? `${product.description.slice(0, 19)}...` : product.description}
+
+                {product.description.length > 10 ? `${product.description.slice(0, 50)}...` : product.description}
               </td>
+              <td className="py-3 px-5 text-xs font-medium text-blue-gray-600">${`${product.discount || 0}%`}</td>
+
               <td className="py-3 px-5 text-xs font-medium text-blue-gray-600">${product.price}</td>
               <td className="py-3 px-5 text-xs font-medium text-blue-gray-600">{product.ratings} / 5</td>
               <td className="py-3 px-5 text-xs font-medium text-blue-gray-600">{product.fabric} </td>
               <td className="py-3 px-5 text-xs font-medium text-blue-gray-600">{product.category.name}</td>
               <td className="py-3 px-5 text-xs font-medium text-blue-gray-600">{product.subcategory.name}</td>
+              <td className="py-3 px-5 text-xs font-medium text-blue-gray-600 cursor-pointer"
+                onClick={async () => {
+                  await UpdateStockProductService(product._id, { available: !product.inStock }).then((res) => {
+                    fetchProducts();
+                  }).catch((err) => {
+
+                  })
+                }}
+              >
+                {product.inStock ? (
+                  <CheckCircleIcon className="h-5 w-5 text-green-500" />
+                ) : (
+                  <XCircleIcon className="h-5 w-5 text-red-500" />
+                )}
+
+              </td>
               <td className="py-3 px-5 text-xs font-medium text-blue-gray-600">
                 <img
                   src={product.images[0]}
@@ -274,12 +312,13 @@ const Products = () => {
               </td>
               <td className="py-3 px-5 text-xs font-medium text-blue-gray-600">
                 <div className="flex items-center gap-2">
+
                   <PencilIcon
-                    className="h-4 w-4 text-gray-600 cursor-pointer"
+                    className="h-5 w-5 text-gray-600 cursor-pointer"
                     onClick={() => handleEditClick(product)}
                   />
                   <TrashIcon
-                    className="h-4 w-4 text-red-500 cursor-pointer"
+                    className="h-5 w-5 text-red-500 cursor-pointer"
                     onClick={() => {
                       setSelectedProduct(product);
                       setOpenDelete(true);
@@ -318,20 +357,47 @@ const Products = () => {
       </Card>
 
       {/* Create Product Modal */}
-      <Dialog open={openCreate} handler={() => setOpenCreate(false)} size="sm">
+      <Dialog open={openCreate} handler={() => setOpenCreate(false)} size="sm" className="">
         <div className=" p-4 flex flex-col gap-4">
           <Typography variant="h6">Create Product</Typography>
           <Input label="Name" value={newProduct.name} onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })} />
           <Input label="Description" value={newProduct.description} onChange={(e) => setNewProduct({ ...newProduct, description: e.target.value })} />
+          <Input label="Discount" type="number" value={newProduct.discount} onChange={(e) => setNewProduct({ ...newProduct, discount: e.target.value })} />
+
           <Input label="Price" value={newProduct.price} type="number" onChange={(e) => setNewProduct({ ...newProduct, price: e.target.value })} />
           <Input max={5} min={1} label="Ratings" value={newProduct.ratings} type="number" onChange={(e) => setNewProduct({ ...newProduct, ratings: e.target.value })} />
           <Input label="Fabric" value={newProduct.fabric} onChange={(e) => setNewProduct({ ...newProduct, fabric: e.target.value })} />
-          <Select label="Category" value={newProduct.category} onChange={(e) => { setNewProduct({ ...newProduct, category: e }); fetchSubCategories(e); }}>
-            {categories.map((cat) => <Option key={cat._id} value={cat._id}>{cat.name}</Option>)}
-          </Select>
-          <Select label="Subcategory" value={newProduct.subcategory} onChange={(e) => setNewProduct({ ...newProduct, subcategory: e })}>
-            {subCategories.map((sub) => <Option key={sub._id} value={sub._id}>{sub.name}</Option>)}
-          </Select>
+          <select
+            value={newProduct.category}
+            onChange={(e) => {
+              setNewProduct({ ...newProduct, category: e.target.value });
+              fetchSubCategories(e.target.value);
+            }}
+            className="border text-sm border-gray-300 rounded-md p-2 w-full"
+          >
+            <option value="">Select Category</option>
+            {categories.map((cat) => (
+              <option key={cat._id} value={cat._id}>
+                {cat.name}
+              </option>
+            ))}
+          </select>
+
+          <select
+            value={newProduct.subcategory}
+            onChange={(e) =>
+              setNewProduct({ ...newProduct, subcategory: e.target.value })
+            }
+            className="border text-sm border-gray-300 rounded-md p-2 w-full mt-2"
+          >
+            <option value="">Select Subcategory</option>
+            {subCategories.map((sub) => (
+              <option key={sub._id} value={sub._id}>
+                {sub.name}
+              </option>
+            ))}
+          </select>
+
           <Select
             label="Sizes"
             multiple
@@ -342,6 +408,12 @@ const Products = () => {
               <Option key={size} value={size}>{size}</Option>
             ))}
           </Select>
+          <div className="flex flex-wrap gap-2">
+            {newProduct.sizes.map((size) => (
+              <Chip key={size} value={size} onClose={() => handleRemoveSize(size)} />
+            ))}
+          </div>
+
           <Input label="Colors (comma-separated)" value={newProduct.colors.join(", ")} onChange={(e) => setNewProduct({ ...newProduct, colors: e.target.value.split(",").map(s => s.trim()) })} />
           <Input
             type="file"

@@ -57,8 +57,12 @@ export const PostProductService = (data) => {
 export const GetProductService = () => {
   return apiAdmin.get('/products')
 }
-export const UpdateProductService = () => {
-  return apiAdmin.get('/products')
+export const UpdateProductService = (productId , data) => {
+  return apiAdmin.put(`/products/${productId}` ,  data  , {
+    headers: {
+      'Content-Type': 'multipart/form-data' // This is optional as Axios will set it automatically
+    }
+  })
 }
 
 export const DeleteProductService = (id) => {
@@ -66,10 +70,14 @@ export const DeleteProductService = (id) => {
 }
 
 
+export const UpdateStockProductService = (id , body) => {
+  return apiAdmin.put(`/products/${id}` , body)
+}
+
+
 
 
 export const FetchProductIdsService = () => {
-
   return apiAdmin.get('/products/id')
 }
 
@@ -241,5 +249,9 @@ export const PutContactService = (bannerId , data) => {
 export const deleteContactService = (bannerId) => {
   return apiAdmin.delete(`/contact/${bannerId}`)
 }
+
+
+
+
 
 
