@@ -118,25 +118,36 @@ const Products = () => {
 
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
-
-    if (files.length !== 3) {
+    const maxFileSize = 3 * 1024 * 1024; // 3MB
+    const maxFiles = 3;
+  
+    // Check if exactly 3 images are selected
+    if (files.length !== maxFiles) {
       dispatch({
         type: "SHOW_POPUP",
-        payload: { type: "error", message: "Please select exactly 3 images." },
+        payload: { type: "error", message: `Please select exactly ${maxFiles} images.` },
       });
       return;
     }
-
-    const validFiles = files.filter((file) => file.size <= 2 * 1024 * 1024);
+  
+    // Validate file size
+    const validFiles = files.filter((file) => file.size <= maxFileSize);
+  
     if (validFiles.length !== files.length) {
       dispatch({
         type: "SHOW_POPUP",
-        payload: { type: "error", message: "Some files exceed size limit or have an invalid type." },
+        payload: { type: "error", message: "Some files exceed the 3MB size limit." },
       });
+      return;
     }
-
-    setNewProduct({ ...newProduct, images: validFiles });
+  
+    // Update state with new images
+    setNewProduct((prev) => ({
+      ...prev,
+      images: [...prev.images, ...validFiles],
+    }));
   };
+  
 
   const handleCreate = async () => {
     if (newProduct.images.length < 1 || newProduct.images.length > 3) {
@@ -186,11 +197,30 @@ const Products = () => {
     formData.append("sizes", newProduct.sizes.join(","));
     formData.append("colors", newProduct.colors.join(","));
 
-    if (newProduct.images.length > 0) {
-      newProduct.images.forEach((image, index) => {
-        formData.append(`images[${index}]`, image);
+    const existingImages = [];
+      const newImages = [];
+     console.log(newProduct);
+      newProduct.images.forEach((image) => {
+        if (typeof image === 'string') {
+          
+          existingImages.push(image); // Collect existing image URLs
+          console.log(existingImages , "existingImages");
+        } else {
+          console.log(image , "image after upload ");
+          newImages.push(image); // Collect new image files
+        }
       });
-    }
+
+      // Ensure existingImages is always sent as an array
+      if (existingImages.length > 0) {
+        formData.append('existingImages', (existingImages));
+      }
+
+      newImages.forEach((image) => {
+        formData.append('images', image);
+      });
+
+
 
     try {
       await UpdateProductService(selectedProduct._id, formData);
@@ -246,6 +276,13 @@ const Products = () => {
     setNewProduct((prevData) => ({
       ...prevData,
       sizes: prevData.sizes.filter(size => size !== sizeToRemove)
+    }));
+  };
+
+  const handleRemoveImage = (index) => {
+    setNewProduct((prev) => ({
+      ...prev,
+      images: prev.images.filter((_, i) => i !== index),
     }));
   };
 
@@ -353,6 +390,8 @@ const Products = () => {
     );
   }, [products]);
 
+
+
   return (
     <div className="p-6">
       <Card>
@@ -456,12 +495,36 @@ const Products = () => {
           <Input label="Price" value={newProduct.price} type="number" onChange={(e) => setNewProduct({ ...newProduct, price: e.target.value })} />
           <Input max={5} min={1} label="Ratings" value={newProduct.ratings} type="number" onChange={(e) => setNewProduct({ ...newProduct, ratings: e.target.value })} />
           <Input label="Fabric" value={newProduct.fabric} onChange={(e) => setNewProduct({ ...newProduct, fabric: e.target.value })} />
-          <Select label="Category" value={newProduct.category} onChange={(e) => { setNewProduct({ ...newProduct, category: e }); fetchSubCategories(e); }}>
-            {categories.map((cat) => <Option key={cat._id} value={cat._id}>{cat.name}</Option>)}
-          </Select>
-          <Select label="Subcategory" value={newProduct.subcategory} onChange={(e) => setNewProduct({ ...newProduct, subcategory: e })}>
-            {subCategories.map((sub) => <Option key={sub._id} value={sub._id}>{sub.name}</Option>)}
-          </Select>
+          <select
+            className="w-full p-2 border border-gray-500 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-grey-600"
+            value={newProduct.category}
+            onChange={(e) => {
+              setNewProduct({ ...newProduct, category: e.target.value });
+              fetchSubCategories(e.target.value);
+            }}
+          >
+            <option value="">Select Category</option>
+            {categories.map((cat) => (
+              <option key={cat._id} value={cat._id}>
+                {cat.name}
+              </option>
+            ))}
+          </select>
+
+          <select
+            className="w-full p-2 border border-gray-500 rounded-md text-sm mt-2 focus:outline-none focus:ring-2 focus:ring-grey-600"
+            value={newProduct.subcategory}
+            onChange={(e) => setNewProduct({ ...newProduct, subcategory: e.target.value })}
+          >
+            <option value="">Select Subcategory</option>
+            {subCategories.map((sub) => (
+              <option key={sub._id} value={sub._id}>
+                {sub.name}
+              </option>
+            ))}
+          </select>
+
+
           <Select
             label="Sizes"
             multiple
@@ -473,14 +536,52 @@ const Products = () => {
             ))}
           </Select>
           <Input label="Colors (comma-separated)" value={newProduct.colors.join(", ")} onChange={(e) => setNewProduct({ ...newProduct, colors: e.target.value.split(",").map(s => s.trim()) })} />
-          <Input
-            type="file"
-            multiple
-            onChange={handleFileChange}
-          />
-          <Typography variant="small" className="mt-2 text-gray-500">
-            Upload new images only if you want to replace the existing ones (exactly 3 images, each up to 2MB).
-          </Typography>
+          <div className="space-y-2">
+            <Typography variant="small" className="text-blue-gray-500">
+              Product Images (Max: 3 images)
+            </Typography>
+            <div className="flex gap-3 flex-wrap">
+              {/* Display Existing Images with Remove Option */}
+              {newProduct.images.map((image, idx) => (
+                <div key={idx} className="relative">
+                  <img
+                    src={typeof image === 'string' ? image : URL.createObjectURL(image)}
+                    alt={`Product ${idx + 1}`}
+                    className="w-16 h-16 object-cover rounded"
+                  />
+                  <button
+                    type="button"
+                    className="absolute top-0 right-0 bg-red-500 text-white text-xs p-1 rounded-full"
+                    onClick={() => handleRemoveImage(idx)}
+                  >
+                    ✕
+                  </button>
+                </div>
+              ))}
+            </div>
+
+            {/* Upload New Images */}
+            {newProduct.images.length < 3 && (
+              <>
+                <Input
+                  label="Upload Images"
+                  name="images"
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={handleFileChange}
+                />
+                <Typography variant="small" className="text-blue-gray-500">
+                  You can upload up to {3 - newProduct.images.length} more image(s), each less than 1MB.
+                </Typography>
+              </>
+            )}
+          </div>
+
+
+
+
+
           <div className="flex justify-end gap-2">
             <Button color="gray" onClick={() => setOpenEdit(false)}>Cancel</Button>
             <Button color="blue" onClick={handleEdit}>Update</Button>
