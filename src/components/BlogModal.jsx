@@ -34,9 +34,9 @@ export function BlogModal({ btnText = 'Add Blog', fetchBlogs }) {
 
   const handleFileChange = (e) => {
     const file = e.target.files[0]
-    if (file && file.size > 1024 * 1024) {
+    if (file && file.size > 2 * 1024 * 1024) {
       // Image size validation: 1 MB
-      setError('Image size must be under 1 MB.')
+      setError('Image size must be under 2 MB.')
       return
     }
     setError('')

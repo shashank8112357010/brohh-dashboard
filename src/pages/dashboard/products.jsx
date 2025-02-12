@@ -14,7 +14,7 @@ import {
 import { useDispatch } from "react-redux";
 import SyncLoader from "react-spinners/SyncLoader";
 import NoData from "../../components/NoData";
-import { DeleteProductService, GetCategoryService, GetProductService, GetSubcategoriesServiceByCategoryId, PostProductService, UpdateProductService, UpdateStockProductService } from "@/services/api.service";
+import { DeleteProductService, GetCategoryService, GetProductService, GetSubcategoriesServiceByCategoryId, PostProductService, UpdateProductService, UpdateStockProductService, UpdateTrendingProductService } from "@/services/api.service";
 import { PencilIcon, TrashIcon, CheckCircleIcon, XCircleIcon } from "@heroicons/react/24/solid";
 
 const Products = () => {
@@ -266,6 +266,8 @@ const Products = () => {
             <th className="py-3 text-left px-5 text-xs font-bold text-black">Category</th>
             <th className="py-3  text-left px-5 text-xs font-bold text-black">Subcategory</th>
             <th className="py-3  text-left px-5 text-xs font-bold text-black">Stock</th>
+            <th className="py-3  text-left px-5 text-xs font-bold text-black">Trending</th>
+
 
             <th className="py-3 text-left  px-5 text-xs font-bold text-black">Images</th>
             <th className="py-3  text-left px-5 text-xs font-bold text-black">Actions</th>
@@ -302,6 +304,24 @@ const Products = () => {
                 )}
 
               </td>
+              <td className="py-3 px-5 text-xs font-medium text-blue-gray-600 cursor-pointer"
+                onClick={async () => {
+                  await UpdateTrendingProductService(product._id, { trending: !product.trending }).then((res) => {
+                    fetchProducts();
+                  }).catch((err) => {
+
+                  })
+                }}
+              >
+                {product.inStock ? (
+                  <CheckCircleIcon className="h-5 w-5 text-green-500" />
+                ) : (
+                  <XCircleIcon className="h-5 w-5 text-red-500" />
+                )}
+
+              </td>
+
+
               <td className="py-3 px-5 text-xs font-medium text-blue-gray-600">
                 <img
                   src={product.images[0]}
