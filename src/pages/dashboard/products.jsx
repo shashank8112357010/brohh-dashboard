@@ -66,13 +66,14 @@ const Products = () => {
   }, [selectedProduct]);
 
   const handleEditClick = (product) => {
+    console.log(product);
     setSelectedProduct(product);
     setNewProduct({
       name: product.name,
       description: product.description,
       ratings: product.ratings,
       price: product.price,
-      sizes: product.sizes || [],
+      sizes: product.sizes[0].split(',').map((i)=>i.trim()) || [],
       colors: product.colors || [],
       fabric: product.fabric,
       category: product.category._id,
@@ -535,6 +536,12 @@ const Products = () => {
               <Option key={size} value={size}>{size}</Option>
             ))}
           </Select>
+          <div className="flex flex-wrap gap-2">
+            {newProduct.sizes.map((size) => (
+              <Chip key={size} value={size} onClose={() => handleRemoveSize(size)} />
+            ))}
+          </div>
+
           <Input label="Colors (comma-separated)" value={newProduct.colors.join(", ")} onChange={(e) => setNewProduct({ ...newProduct, colors: e.target.value.split(",").map(s => s.trim()) })} />
           <div className="space-y-2">
             <Typography variant="small" className="text-blue-gray-500">

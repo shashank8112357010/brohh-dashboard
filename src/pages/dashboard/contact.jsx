@@ -94,7 +94,7 @@ export function Contact() {
               <table className="w-full min-w-[640px] table-auto">
                 <thead>
                   <tr>
-                    {['Name', 'Email', 'Message', 'Status', 'Actions'].map((header) => (
+                    {['Name', 'Email', 'Phone', 'Message', 'Status', 'Actions'].map((header) => (
                       <th key={header} className="border-b border-blue-gray-50 py-3 px-5 text-left">
                         <Typography variant="small" className="text-[11px] font-bold uppercase text-blue-gray-400">
                           {header}
@@ -104,7 +104,7 @@ export function Contact() {
                   </tr>
                 </thead>
                 <tbody>
-                  {contacts.map(({ _id, name, email, message, status }, key) => {
+                  {contacts.map(({ _id, name, email, phone , message, status }, key) => {
                     const className = `py-3 px-5 ${key === contacts.length - 1 ? '' : 'border-b border-blue-gray-50'}`
 
                     return (
@@ -117,6 +117,11 @@ export function Contact() {
                         <td className={className}>
                           <Typography variant="small" color="blue-gray" className="text-xs font-medium">
                             {email}
+                          </Typography>
+                        </td>
+                        <td className={className}>
+                          <Typography variant="small" color="blue-gray" className="text-xs font-medium">
+                            {phone || 'N/A'}
                           </Typography>
                         </td>
                         <td className={className}>
