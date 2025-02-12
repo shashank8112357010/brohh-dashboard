@@ -71,11 +71,11 @@ export const DeleteProductService = (id) => {
 
 
 export const UpdateStockProductService = (id , body) => {
-  return apiAdmin.put(`/stock/products/${id}` , body)
+  return apiAdmin.put(`/products/stock/${id}` , body)
 }
 
 export const UpdateTrendingProductService = (id , body) => {
-  return apiAdmin.put(`/trending/products/${id}` , body)
+  return apiAdmin.put(`/products/trending/${id}` , body)
 }
 
 

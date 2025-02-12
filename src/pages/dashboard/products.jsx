@@ -313,7 +313,7 @@ const Products = () => {
                   })
                 }}
               >
-                {product.inStock ? (
+                {product.trending ? (
                   <CheckCircleIcon className="h-5 w-5 text-green-500" />
                 ) : (
                   <XCircleIcon className="h-5 w-5 text-red-500" />
