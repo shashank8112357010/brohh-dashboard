@@ -6,6 +6,10 @@ export const AdminLoginService = (data) => {
 }
 
 
+export const GetUsersService = (data) => {
+  return apiAdmin.get('/users/users', data)
+}
+
 
 // category => 
 

@@ -11,7 +11,8 @@ import {
   UserGroupIcon,
   StarIcon,
   PhotoIcon,
-  InboxIcon, // Added appropriate icon for Banner
+  InboxIcon,
+  UserCircleIcon, // Added appropriate icon for Banner
 } from '@heroicons/react/24/solid';
 
 import {
@@ -27,6 +28,7 @@ import {
   SubCategory,
   Banner,
   Contact,
+  User,
 } from '@/pages/dashboard';
 
 import Products from './pages/dashboard/products';
@@ -41,6 +43,7 @@ export const routes = [
     layout: 'dashboard',
     pages: [
       { icon: <HomeIcon {...icon} />, name: 'Home', path: '/home', element: <Home /> },
+      { icon: <UserCircleIcon {...icon} />, name: 'User', path: '/user', element: <User /> },
       { icon: <PhotoIcon {...icon} />, name: 'Banner', path: '/banner', element: <Banner /> },
       { icon: <Squares2X2Icon {...icon} />, name: 'Category', path: '/category', element: <Category /> },
       { icon: <RectangleStackIcon {...icon} />, name: 'Subcategory', path: '/subcategory', element: <SubCategory /> },
@@ -53,8 +56,6 @@ export const routes = [
       { icon: <UserGroupIcon {...icon} />, name: 'Influencers', path: '/influencer', element: <Influencer /> },
       { icon: <InboxIcon {...icon} />, name: 'Contact', path: '/contact', element: <Contact /> },
       { icon: <StarIcon {...icon} />, name: 'Review', path: '/review', element: <Review /> },
-   
-
     ],
   },
 ];
