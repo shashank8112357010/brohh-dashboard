@@ -120,16 +120,8 @@ const Products = () => {
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
     const maxFileSize = 3 * 1024 * 1024; // 3MB
-    const maxFiles = 3;
   
-    // Check if exactly 3 images are selected
-    if (files.length !== maxFiles) {
-      dispatch({
-        type: "SHOW_POPUP",
-        payload: { type: "error", message: `Please select exactly ${maxFiles} images.` },
-      });
-      return;
-    }
+
   
     // Validate file size
     const validFiles = files.filter((file) => file.size <= maxFileSize);

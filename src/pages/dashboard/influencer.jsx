@@ -1,5 +1,5 @@
 import InfluencerModal from '@/components/InfluencerModal'
-import { GetInfluencerService, DeleteInfluencerService, FetchProductIdsService } from '@/services/api.service'
+import { GetInfluencerService, DeleteInfluencerService, FetchProductIdsService, GetStyleService } from '@/services/api.service'
 import {
   Card,
   CardHeader,
@@ -13,6 +13,7 @@ import { useEffect, useState } from 'react'
 export function Influencer() {
   const [influencers, setInfluencers] = useState([])
   const [loading, setLoading] = useState(true)
+  const [styles, setStyles] = useState([])
 
   // Fetch influencers data on component mount
   const fetchAllInfluencers = async () => {
@@ -41,8 +42,18 @@ export function Influencer() {
     }
   }
 
+  const fetchAllStyles = async () => {
+    await GetStyleService().then((res) => {
+      setStyles(res.data.data || [])
+        
+    }).catch((err) => {
+     console.log(err);
+    })
+  }
+
   useEffect(() => {
-    fetchAllInfluencers()
+    fetchAllInfluencers();
+    fetchAllStyles()
   }, [])
 
 
@@ -57,7 +68,7 @@ export function Influencer() {
             </Typography>
           </CardHeader>
           <div className="px-4 flex justify-end">
-            <InfluencerModal fetchAllInfluencers={fetchAllInfluencers} />
+            <InfluencerModal style={styles} fetchAllInfluencers={fetchAllInfluencers} />
             {/* Pass the function to Modal */}
           </div>
           <CardBody className="overflow-x-scroll px-0 pt-0 pb-2">
@@ -91,8 +102,8 @@ export function Influencer() {
                       key
                     ) => {
                       const className = `py-3 px-5 ${key === influencers.length - 1
-                          ? ''
-                          : 'border-b border-blue-gray-50'
+                        ? ''
+                        : 'border-b border-blue-gray-50'
                         }`
 
                       return (

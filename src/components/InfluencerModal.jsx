@@ -16,7 +16,7 @@ import {
 import { setPopup } from '@/store/slice/dashboardSlice'
 import { useDispatch } from 'react-redux'
 
-export function InfluencerModal({ fetchAllInfluencers }) {
+export function InfluencerModal({ style, fetchAllInfluencers }) {
   const [open, setOpen] = useState(false)
   const dispatch = useDispatch()
   const [loading, setLoading] = useState(false)
@@ -25,7 +25,8 @@ export function InfluencerModal({ fetchAllInfluencers }) {
     name: '',
     instagramHandle: '',
     productIds: [],
-    image: null
+    image: null,
+    styleId : ''
   })
   const [productIds, setProductIds] = useState([])
   const [error, setError] = useState('')
@@ -106,6 +107,8 @@ export function InfluencerModal({ fetchAllInfluencers }) {
     formDataToSend.append('instagramHandle', formData.instagramHandle)
     formDataToSend.append('productIds', JSON.stringify(formData.productIds))
     formDataToSend.append('image', formData.image)
+    formDataToSend.append('styleId', formData.styleId)
+
 
     setLoading(true)
     PostInfluencerService(formDataToSend)
@@ -168,6 +171,30 @@ export function InfluencerModal({ fetchAllInfluencers }) {
                 value={formData.instagramHandle}
                 onChange={handleInputChange}
               />
+              <select
+                className="w-full p-2 border border-gray-500 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-grey-600"
+                value={formData.styleId}
+                onChange={(e) => {
+                  setFormData((prev)=>({...prev , styleId : e.target.value}));
+                }}
+              >
+                <option value="">Select Style</option>
+                {style.map(({ name, image, _id }, key) => (
+                  <option key={_id} value={_id}>
+                    <label
+                      htmlFor={`style-${name}`}
+                      className="flex items-center gap-2"
+                    >
+                      <img
+                        src={image}
+                        alt={name}
+                        className="w-8 h-8 object-cover"
+                      />
+                      <Typography variant="small">{name}</Typography>
+                    </label>
+                  </option>
+                ))}
+              </select>
               <Input type="file" label="Image" onChange={handleFileChange} />
               <Typography variant="small" className="mb-2 text-gray-600">
                 Select Product IDs:
